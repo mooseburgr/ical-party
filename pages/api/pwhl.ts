@@ -17,12 +17,12 @@ export default async function handler(
 
   const allGamesResponse = await fetch(allGamesIcalUrl);
 
-  const allGames = ics.parseIcsCalendar(await allGamesResponse.text());
+  const allGamesCalendar = ics.parseIcsCalendar(await allGamesResponse.text());
 
-  logger.info(`found ${allGames.events?.length} total PWHL games`);
+  logger.info(`found ${allGamesCalendar.events?.length} total PWHL games`);
 
   // filter for teams
-  const filteredGames = allGames.events?.filter((game) => {
+  const filteredGames = allGamesCalendar.events?.filter((game) => {
     for (const team of teams) {
       if (game.summary.includes(team || "")) {
         return true;
@@ -34,8 +34,8 @@ export default async function handler(
   logger.info(
     `filtered with '${teams}' down to ${filteredGames?.length} games`,
   );
+  const filteredGamesCalendar = { ...allGamesCalendar, events: filteredGames };
+  const outputIcsCalendar = ics.generateIcsCalendar(filteredGamesCalendar);
 
-  const icsCalendar = ics.generateIcsCalendar(allGames);
-
-  res.status(200).send(icsCalendar);
+  res.status(200).send(outputIcsCalendar);
 }
