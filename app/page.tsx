@@ -48,13 +48,12 @@ export default function ToggleButtonsPage() {
             onChange={handlePwhlToggle}
             aria-label="PWHL teams button group"
           >
-            <Grid container spacing={2} 
-            >
+            <Grid container spacing={2}>
               <ToggleButton value="Boston" aria-label="Boston">
                 <Stack alignItems="center">
                   <Image src={boston} alt="Boston" width={iconWidth} />
                   Boston
-                  <br/>
+                  <br />
                   Fleet
                 </Stack>
               </ToggleButton>
@@ -62,7 +61,7 @@ export default function ToggleButtonsPage() {
                 <Stack alignItems="center">
                   <Image src={minnesota} alt="Minnesota" width={iconWidth} />
                   Minnesota
-                  <br/>
+                  <br />
                   Frost
                 </Stack>
               </ToggleButton>
@@ -70,7 +69,7 @@ export default function ToggleButtonsPage() {
                 <Stack alignItems="center">
                   <Image src={montreal} alt="Montreal" width={iconWidth} />
                   Montréal
-                  <br/>
+                  <br />
                   Victoire
                 </Stack>
               </ToggleButton>
@@ -78,7 +77,7 @@ export default function ToggleButtonsPage() {
                 <Stack alignItems="center">
                   <Image src={newyork} alt="New York" width={iconWidth} />
                   New York
-                  <br/>
+                  <br />
                   Sirens
                 </Stack>
               </ToggleButton>
@@ -86,7 +85,7 @@ export default function ToggleButtonsPage() {
                 <Stack alignItems="center">
                   <Image src={ottawa} alt="Ottawa" width={iconWidth} />
                   Ottawa
-                  <br/>
+                  <br />
                   Charge
                 </Stack>
               </ToggleButton>
@@ -94,7 +93,7 @@ export default function ToggleButtonsPage() {
                 <Stack alignItems="center">
                   <Image src={toronto} alt="Toronto" width={iconWidth} />
                   Toronto
-                  <br/>
+                  <br />
                   Sceptres
                 </Stack>
               </ToggleButton>
@@ -102,7 +101,7 @@ export default function ToggleButtonsPage() {
           </ToggleButtonGroup>
         </Grid>
 
-        <Grid size={{xs:12,md:8}}>
+        <Grid size={{ xs: 12, md: 8 }}>
           <Typography>Add URL to your calendar app:</Typography>
           <CodeBlock code={pwhlUrl} />
         </Grid>
