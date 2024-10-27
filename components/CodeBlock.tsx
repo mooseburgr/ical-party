@@ -7,19 +7,14 @@ import {
   OutlinedInput,
   InputAdornment,
   IconButton,
-  Box,
   Grid2 as Grid,
 } from "@mui/material";
 
 interface CodeBlockProps {
   code: string;
-  language?: string;
 }
 
-export default function CodeBlock({
-  code,
-  language = "plaintext",
-}: CodeBlockProps) {
+export default function CodeBlock({ code }: CodeBlockProps) {
   const [isCopied, setIsCopied] = useState(false);
 
   const copyToClipboard = async () => {

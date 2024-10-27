@@ -17,7 +17,6 @@ import {
   Box,
   Typography,
   Grid2 as Grid,
-  Stack,
 } from "@mui/material";
 
 export default function ToggleButtonsPage() {

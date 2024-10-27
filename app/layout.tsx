@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/react";
 import ThemeRegistry from "@/components/ThemeRegistry";
-import localFont from "next/font/local";
 import "./globals.css";
-import CssBaseline from "@mui/material/CssBaseline";
 
 export const metadata: Metadata = {
   title: "iCal Party",
