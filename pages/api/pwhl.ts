@@ -13,7 +13,7 @@ export default async function handler(
 ) {
   const teams = Array.isArray(req.query.teams)
     ? req.query.teams
-    : [req.query.teams];
+    : (req.query.teams || "").split(",");
 
   const allGamesResponse = await fetch(allGamesIcalUrl);
 
@@ -34,8 +34,15 @@ export default async function handler(
   logger.info(
     `filtered with '${teams}' down to ${filteredGames?.length} games`,
   );
-  const filteredGamesCalendar = { ...allGamesCalendar, events: filteredGames };
+  const filteredGamesCalendar = {
+    prodId: allGamesCalendar.prodId.trimEnd(),
+    version: allGamesCalendar.version,
+    events: filteredGames,
+  };
   const outputIcsCalendar = ics.generateIcsCalendar(filteredGamesCalendar);
 
-  res.status(200).send(outputIcsCalendar);
+  res
+    .status(200)
+    .setHeader("Content-Type", "text/calendar")
+    .send(outputIcsCalendar);
 }
