@@ -1,101 +1,112 @@
+"use client";
+
+import CodeBlock from "@/components/CodeBlock";
+
 import Image from "next/image";
+import boston from "../public/boston.png";
+import minnesota from "../public/minnesota.png";
+import montreal from "../public/montreal.png";
+import newyork from "../public/newyork.png";
+import ottawa from "../public/ottawa.png";
+import toronto from "../public/toronto.png";
 
-export default function Home() {
+import React, { useState } from "react";
+import {
+  ToggleButton,
+  ToggleButtonGroup,
+  Box,
+  Typography,
+  Grid2 as Grid,
+  Stack,
+} from "@mui/material";
+
+export default function ToggleButtonsPage() {
+  const iconWidth = 100;
+  const [selectedPwhlTeams, setSelectedPwhlTeams] = useState<string[]>([
+    "Minnesota",
+  ]);
+  const pwhlUrl = `https://ical-party.vercel.app/api/pwhl?teams=${selectedPwhlTeams.sort().join(",")}`;
+
+  const handlePwhlToggle = (
+    event: React.MouseEvent<HTMLElement>,
+    newSelectedButtons: string[],
+  ) => {
+    setSelectedPwhlTeams(newSelectedButtons);
+  };
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+    <Box sx={{ p: 4 }}>
+      <Grid container spacing={2}>
+        <Grid size={12}>
+          <Typography variant="h4" gutterBottom>
+            PWHL teams to include
+          </Typography>
+        </Grid>
+        <Grid size={12}>
+          <ToggleButtonGroup
+            value={selectedPwhlTeams}
+            onChange={handlePwhlToggle}
+            aria-label="PWHL teams button group"
+          >
+            <Grid container spacing={2} 
+            >
+              <ToggleButton value="Boston" aria-label="Boston">
+                <Stack alignItems="center">
+                  <Image src={boston} alt="Boston" width={iconWidth} />
+                  Boston
+                  <br/>
+                  Fleet
+                </Stack>
+              </ToggleButton>
+              <ToggleButton value="Minnesota" aria-label="Minnesota">
+                <Stack alignItems="center">
+                  <Image src={minnesota} alt="Minnesota" width={iconWidth} />
+                  Minnesota
+                  <br/>
+                  Frost
+                </Stack>
+              </ToggleButton>
+              <ToggleButton value="Montreal" aria-label="Montreal">
+                <Stack alignItems="center">
+                  <Image src={montreal} alt="Montreal" width={iconWidth} />
+                  Montréal
+                  <br/>
+                  Victoire
+                </Stack>
+              </ToggleButton>
+              <ToggleButton value="New York" aria-label="New York">
+                <Stack alignItems="center">
+                  <Image src={newyork} alt="New York" width={iconWidth} />
+                  New York
+                  <br/>
+                  Sirens
+                </Stack>
+              </ToggleButton>
+              <ToggleButton value="Ottawa" aria-label="Ottawa">
+                <Stack alignItems="center">
+                  <Image src={ottawa} alt="Ottawa" width={iconWidth} />
+                  Ottawa
+                  <br/>
+                  Charge
+                </Stack>
+              </ToggleButton>
+              <ToggleButton value="Toronto" aria-label="Toronto">
+                <Stack alignItems="center">
+                  <Image src={toronto} alt="Toronto" width={iconWidth} />
+                  Toronto
+                  <br/>
+                  Sceptres
+                </Stack>
+              </ToggleButton>
+            </Grid>
+          </ToggleButtonGroup>
+        </Grid>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+        <Grid size={{xs:12,md:8}}>
+          <Typography>Add URL to your calendar app:</Typography>
+          <CodeBlock code={pwhlUrl} />
+        </Grid>
+      </Grid>
+    </Box>
   );
 }
