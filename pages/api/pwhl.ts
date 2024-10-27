@@ -15,7 +15,18 @@ export default async function handler(
     ? req.query.teams
     : (req.query.teams || "").split(",");
 
-  const allGamesResponse = await fetch(allGamesIcalUrl);
+  // fetch all games, caching for 3h
+  const allGamesResponse = await fetch(allGamesIcalUrl, {
+    next: {
+      revalidate: 60 * 60 * 3,
+    },
+  });
+
+  if (!allGamesResponse.ok) {
+    throw new Error(
+      `Failed to fetch games: ${JSON.stringify(allGamesResponse)}`,
+    );
+  }
 
   const allGamesCalendar = ics.parseIcsCalendar(await allGamesResponse.text());
 
