@@ -20,7 +20,7 @@ import {
 } from "@mui/material";
 
 export default function ToggleButtonsPage() {
-  const iconWidth = 150;
+  const iconWidth = 140;
   const [selectedPwhlTeams, setSelectedPwhlTeams] = useState<string[]>([
     "Minnesota",
   ]);
