@@ -54,7 +54,7 @@ export default function ToggleButtonsPage() {
               <ToggleButton value="Minnesota" aria-label="Minnesota">
                 <Image src={minnesota} alt="Minnesota" width={iconWidth} />
               </ToggleButton>
-              <ToggleButton value="Montreal" aria-label="Montreal">
+              <ToggleButton value="Montr" aria-label="Montreal">
                 <Image src={montreal} alt="Montreal" width={iconWidth} />
               </ToggleButton>
               <ToggleButton value="New%20York" aria-label="New York">
