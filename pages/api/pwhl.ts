@@ -30,8 +30,6 @@ export default async function handler(
 
   const allGamesCalendar = ics.parseIcsCalendar(await allGamesResponse.text());
 
-  logger.info(`found ${allGamesCalendar.events?.length} total PWHL games`);
-
   // filter for teams
   const filteredGames = allGamesCalendar.events?.filter((game) => {
     for (const team of teams) {
@@ -43,7 +41,11 @@ export default async function handler(
   });
 
   logger.info(
-    `filtered with '${teams}' down to ${filteredGames?.length} games`,
+    `found %s total PWHL games, filtered with '%s' down to %s games, from user-agent '%s'`,
+    allGamesCalendar.events?.length,
+    teams,
+    filteredGames?.length,
+    req.headers["user-agent"],
   );
   const filteredGamesCalendar = {
     prodId: allGamesCalendar.prodId.trimEnd(),
