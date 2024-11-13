@@ -3,12 +3,12 @@
 import CodeBlock from "@/components/CodeBlock";
 
 import Image from "next/image";
-import boston from "../public/boston.svg";
-import minnesota from "../public/minnesota.svg";
-import montreal from "../public/montreal.svg";
-import newyork from "../public/newyork.svg";
-import ottawa from "../public/ottawa.svg";
-import toronto from "../public/toronto.svg";
+import boston from "../public/boston.webp";
+import minnesota from "../public/minnesota.webp";
+import montreal from "../public/montreal.webp";
+import newyork from "../public/newyork.webp";
+import ottawa from "../public/ottawa.webp";
+import toronto from "../public/toronto.webp";
 
 import React, { useState } from "react";
 import {
