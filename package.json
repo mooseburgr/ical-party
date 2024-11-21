@@ -24,7 +24,7 @@
     "ts-ics": "^1.6.2"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "^3.1.0",
+    "@eslint/eslintrc": "^3.2.0",
     "@eslint/js": "^9.14.0",
     "@types/node": "^22",
     "@types/react": "^18",
