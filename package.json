@@ -21,7 +21,7 @@
     "react": "^18",
     "react-dom": "^18",
     "sharp": "^0.33.5",
-    "ts-ics": "^1.6.3"
+    "ts-ics": "^1.6.4"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",
