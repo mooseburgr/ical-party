@@ -14,7 +14,7 @@
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.5",
     "@mui/icons-material": "^6.1.7",
-    "@mui/material": "^6.1.7",
+    "@mui/material": "^6.1.8",
     "@vercel/analytics": "^1.4.1",
     "next": "15.0.3",
     "pino": "^9.5.0",
