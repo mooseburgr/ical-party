@@ -16,6 +16,7 @@ import {
   ToggleButtonGroup,
   Box,
   Typography,
+  Tooltip,
   Grid2 as Grid,
 } from "@mui/material";
 
@@ -36,11 +37,11 @@ export default function ToggleButtonsPage() {
   return (
     <Box sx={{ p: 4 }}>
       <Grid container spacing={2}>
-        <Grid size={12}>
+        <Tooltip title="If no teams are selected, all games will be included">
           <Typography variant="h4" gutterBottom>
             PWHL teams to include
           </Typography>
-        </Grid>
+        </Tooltip>
         <Grid size={12}>
           <ToggleButtonGroup
             value={selectedPwhlTeams}
@@ -48,24 +49,41 @@ export default function ToggleButtonsPage() {
             aria-label="PWHL teams button group"
           >
             <Grid container spacing={2}>
-              <ToggleButton value="Boston" aria-label="Boston">
-                <Image src={boston} alt="Boston" width={iconWidth} />
-              </ToggleButton>
-              <ToggleButton value="Minnesota" aria-label="Minnesota">
-                <Image src={minnesota} alt="Minnesota" width={iconWidth} />
-              </ToggleButton>
-              <ToggleButton value="Montr" aria-label="Montreal">
-                <Image src={montreal} alt="Montreal" width={iconWidth} />
-              </ToggleButton>
-              <ToggleButton value="New%20York" aria-label="New York">
-                <Image src={newyork} alt="New York" width={iconWidth} />
-              </ToggleButton>
-              <ToggleButton value="Ottawa" aria-label="Ottawa">
-                <Image src={ottawa} alt="Ottawa" width={iconWidth} />
-              </ToggleButton>
-              <ToggleButton value="Toronto" aria-label="Toronto">
-                <Image src={toronto} alt="Toronto" width={iconWidth} />
-              </ToggleButton>
+              <Tooltip title="Boston Fleet">
+                <ToggleButton value="Boston" aria-label="Boston">
+                  <Image src={boston} alt="Boston" width={iconWidth} />
+                </ToggleButton>
+              </Tooltip>
+
+              <Tooltip title="Minnesota Frost">
+                <ToggleButton value="Minnesota" aria-label="Minnesota">
+                  <Image src={minnesota} alt="Minnesota" width={iconWidth} />
+                </ToggleButton>
+              </Tooltip>
+
+              <Tooltip title="Montréal Victoire">
+                <ToggleButton value="Montr" aria-label="Montreal">
+                  <Image src={montreal} alt="Montreal" width={iconWidth} />
+                </ToggleButton>
+              </Tooltip>
+
+              <Tooltip title="New York Sirens">
+                <ToggleButton value="New%20York" aria-label="New York">
+                  <Image src={newyork} alt="New York" width={iconWidth} />
+                </ToggleButton>
+              </Tooltip>
+
+              <Tooltip title="Ottawa Charge">
+                <ToggleButton value="Ottawa" aria-label="Ottawa">
+                  <Image src={ottawa} alt="Ottawa" width={iconWidth} />
+                </ToggleButton>
+              </Tooltip>
+
+              <Tooltip title="Toronto Sceptres">
+                <ToggleButton value="Toronto" aria-label="Toronto">
+                  <Image src={toronto} alt="Toronto" width={iconWidth} />
+                </ToggleButton>
+              </Tooltip>
             </Grid>
           </ToggleButtonGroup>
         </Grid>
