@@ -16,7 +16,7 @@
     "@mui/icons-material": "^6.1.10",
     "@mui/material": "^6.1.9",
     "@vercel/analytics": "^1.4.1",
-    "next": "15.0.4",
+    "next": "15.1.0",
     "pino": "^9.5.0",
     "react": "^18",
     "react-dom": "^18",
