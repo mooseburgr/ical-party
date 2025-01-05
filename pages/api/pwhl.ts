@@ -41,10 +41,10 @@ export default async function handler(
   });
 
   logger.info(
-    `found %s total PWHL games, filtered with '%s' down to %s games, from user-agent '%s'`,
-    allGamesCalendar.events?.length,
+    `filtered w '%s' down to %s out of %s total PWHL games from user-agent '%s'`,
     teams,
     filteredGames?.length,
+    allGamesCalendar.events?.length,
     req.headers["user-agent"],
   );
   const filteredGamesCalendar = {
