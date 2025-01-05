@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import ThemeRegistry from "@/components/ThemeRegistry";
 import "./globals.css";
 
@@ -22,6 +23,7 @@ export default function RootLayout({
         <ThemeRegistry>
           {children}
           <Analytics />
+          <SpeedInsights />
         </ThemeRegistry>
       </body>
     </html>
