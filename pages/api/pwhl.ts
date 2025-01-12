@@ -51,6 +51,7 @@ export default async function handler(
     prodId: allGamesCalendar.prodId.trimEnd(),
     version: allGamesCalendar.version,
     events: filteredGames,
+    name: "PWHL Games"
   };
   const outputIcsCalendar = ics.generateIcsCalendar(filteredGamesCalendar);
 
