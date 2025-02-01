@@ -17,6 +17,7 @@ export default async function handler(
 
   // fetch all games, caching for 3h
   const allGamesResponse = await fetch(allGamesIcalUrl, {
+    cache: "force-cache",
     next: {
       revalidate: 60 * 60 * 3,
     },
@@ -51,7 +52,7 @@ export default async function handler(
     prodId: allGamesCalendar.prodId.trimEnd(),
     version: allGamesCalendar.version,
     events: filteredGames,
-    name: "PWHL Games"
+    name: "PWHL Games",
   };
   const outputIcsCalendar = ics.generateIcsCalendar(filteredGamesCalendar);
 
