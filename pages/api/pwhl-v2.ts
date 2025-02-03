@@ -50,7 +50,7 @@ export default async function handler(
 
   res
     .status(200)
-    // .setHeader("Content-Type", "text/calendar")
+    // .setHeader("Content-Type", "text/calendar") TODO re-add
     .send(outputIcsCalendar);
 }
 
@@ -59,7 +59,12 @@ async function fetchAllGames() {
   // iterate over "all" seasons and add each's list of games to a single list
   const seasonPromises = allSeasonIds.map(async (seasonId) => {
     try {
-      const seasonResp = await fetch(scheduleUrl + seasonId);
+      const seasonResp = await fetch(scheduleUrl + seasonId, {
+        cache: "force-cache",
+        next: {
+          revalidate: 60 * 60 * 3,
+        },
+      });
       const seasonData: HockeyTechResponse = await seasonResp.json();
       return seasonData.SiteKit.Schedule || [];
     } catch (error) {
