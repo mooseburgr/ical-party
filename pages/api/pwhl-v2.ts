@@ -51,7 +51,7 @@ export default async function handler(
 
   res
     .status(200)
-    // .setHeader("Content-Type", "text/calendar") TODO re-add
+    .setHeader("Content-Type", "text/calendar")
     .send(outputIcsCalendar);
 }
 
