@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import * as ics from "ts-ics";
 import pino from "pino";
 import { Game, HockeyTechResponse } from "@/pages/api/types";
-import { VCalendar, VEvent } from "ts-ics";
+import { VCalendar } from "ts-ics";
 
 const logger = pino();
 
@@ -41,12 +41,12 @@ export default async function handler(
   );
 
   const teamsDisplay = teams.length > 0 ? teams : "all";
-  const filteredGamesCalendar = {
+  const filteredGamesCalendar: VCalendar = {
     prodId: `-//ical-party//pwhl//${teamsDisplay}//EN`,
     version: "2.0",
     events: icsEvents,
     name: `PWHL Games [${teamsDisplay}]`,
-  } as VCalendar;
+  };
   const outputIcsCalendar = ics.generateIcsCalendar(filteredGamesCalendar);
 
   res
@@ -119,19 +119,19 @@ function buildVEvents(games: Game[]): ics.VEvent[] {
 
     let description =
       `Game Center: https://www.thepwhl.com/en/stats/game-center/${g.game_id}` +
-      `\nVenue: ${g.venue_name} - ${g.venue_url}` +
-      `\nTickets: ${g.tickets_url}` +
-      `\nBroadcasts: ${broadcasters}` +
-      `\nYouTube: https://www.youtube.com/@thepwhlofficial`;
+      `\r\n Venue: ${g.venue_name} ${g.venue_url ? "- " + g.venue_url : ""}` +
+      `\r\n Tickets: ${g.tickets_url}` +
+      `\r\n Broadcasts: ${broadcasters}` +
+      `\r\n YouTube: https://www.youtube.com/@thepwhlofficial`;
 
     if (start < now) {
       // include scores and links to reports if game start is in the past
       summary = `${g.visiting_team_name} (${g.visiting_goal_count}) @ ${g.home_team_name} (${g.home_goal_count})`;
       description +=
-        `\nStatus: ${g.game_status}` +
-        `\nGame Summary: https://www.thepwhl.com/en/stats/game-summary/${g.game_id}` +
-        `\nGame Sheet: https://lscluster.hockeytech.com/game_reports/official-game-report.php?client_code=pwhl&game_id=${g.game_id}&lang_id=1` +
-        `\nGame Report: https://lscluster.hockeytech.com/game_reports/text-game-report.php?client_code=pwhl&game_id=${g.game_id}&lang_id=1`;
+        `\r\n Status: ${g.game_status}` +
+        `\r\n Game Summary: https://www.thepwhl.com/en/stats/game-summary/${g.game_id}` +
+        `\r\n Game Sheet: https://lscluster.hockeytech.com/game_reports/official-game-report.php?client_code=pwhl&game_id=${g.game_id}&lang_id=1` +
+        `\r\n Game Report: https://lscluster.hockeytech.com/game_reports/text-game-report.php?client_code=pwhl&game_id=${g.game_id}&lang_id=1`;
     }
 
     const event: ics.VEvent = {
@@ -142,6 +142,7 @@ function buildVEvents(games: Game[]): ics.VEvent[] {
       duration: { hours: 3 },
       location: `${g.venue_name}, ${g.venue_location}`,
       description: description,
+      comment: "test comment plz ignore",
       url: g.mobile_calendar,
       status: "CONFIRMED",
     };
