@@ -30,7 +30,7 @@ export default async function handler(
 
   const filteredGames = filterGamesByTeam(allGames, teams);
 
-  const icsEvents: VEvent[] = buildVEvents(filteredGames);
+  const icsEvents = buildVEvents(filteredGames);
 
   logger.info(
     `filtered w '%s' down to %s out of %s total PWHL games from user-agent '%s'`,
@@ -43,6 +43,7 @@ export default async function handler(
   const teamsDisplay = teams.length > 0 ? teams : "all";
   const filteredGamesCalendar = {
     prodId: `-//ical-party//pwhl//${teamsDisplay}//EN`,
+    version: "2.0",
     events: icsEvents,
     name: `PWHL Games [${teamsDisplay}]`,
   } as VCalendar;
@@ -50,7 +51,7 @@ export default async function handler(
 
   res
     .status(200)
-    // .setHeader("Content-Type", "text/calendar") TODO re-add
+    .setHeader("Content-Type", "text/calendar")
     .send(outputIcsCalendar);
 }
 
@@ -116,21 +117,21 @@ function buildVEvents(games: Game[]): ics.VEvent[] {
       ...(g.broadcasters.home_video_fr?.map((b) => b.name) ?? []),
     ].join(", ");
 
-    let description = `Game Center: https://www.thepwhl.com/en/stats/game-center/${g.game_id}
-Venue: ${g.venue_name} - ${g.venue_url}
-Tickets: ${g.tickets_url}
-Broadcasts: ${broadcasters}
-YouTube: https://www.youtube.com/@thepwhlofficial`;
+    let description =
+      `Game Center: https://www.thepwhl.com/en/stats/game-center/${g.game_id}` +
+      `\nVenue: ${g.venue_name} - ${g.venue_url}` +
+      `\nTickets: ${g.tickets_url}` +
+      `\nBroadcasts: ${broadcasters}` +
+      `\nYouTube: https://www.youtube.com/@thepwhlofficial`;
 
     if (start < now) {
       // include scores and links to reports if game start is in the past
       summary = `${g.visiting_team_name} (${g.visiting_goal_count}) @ ${g.home_team_name} (${g.home_goal_count})`;
-      description += `
-Status: ${g.game_status}
-Game Summary: https://www.thepwhl.com/en/stats/game-summary/${g.game_id}
-Game Sheet: https://lscluster.hockeytech.com/game_reports/official-game-report.php?client_code=pwhl&game_id=${g.game_id}&lang_id=1
-Game Report: https://lscluster.hockeytech.com/game_reports/text-game-report.php?client_code=pwhl&game_id=${g.game_id}&lang_id=1
-`;
+      description +=
+        `\nStatus: ${g.game_status}` +
+        `\nGame Summary: https://www.thepwhl.com/en/stats/game-summary/${g.game_id}` +
+        `\nGame Sheet: https://lscluster.hockeytech.com/game_reports/official-game-report.php?client_code=pwhl&game_id=${g.game_id}&lang_id=1` +
+        `\nGame Report: https://lscluster.hockeytech.com/game_reports/text-game-report.php?client_code=pwhl&game_id=${g.game_id}&lang_id=1`;
     }
 
     const event: ics.VEvent = {
