@@ -2,7 +2,6 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import * as ics from "ts-ics";
 import pino from "pino";
 import { Game, HockeyTechResponse } from "@/pages/api/types";
-import { VCalendar } from "ts-ics";
 
 const logger = pino();
 
@@ -17,14 +16,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<string>,
 ) {
-  let teams: string[] = [];
-  if (req.query.teams) {
-    teams = Array.isArray(req.query.teams)
-      ? req.query.teams
-      : req.query.teams.split(",");
-  }
-  teams.sort((a, b) => a.localeCompare(b));
-  console.log(teams.length);
+  const teams = getTeamsFromRequest(req);
 
   const allGames = await fetchAllGames();
 
@@ -41,18 +33,28 @@ export default async function handler(
   );
 
   const teamsDisplay = teams.length > 0 ? teams : "all";
-  const filteredGamesCalendar: VCalendar = {
+  const outputIcsCalendar = ics.generateIcsCalendar({
     prodId: `-//ical-party//pwhl//${teamsDisplay}//EN`,
     version: "2.0",
     events: icsEvents,
     name: `PWHL Games [${teamsDisplay}]`,
-  };
-  const outputIcsCalendar = ics.generateIcsCalendar(filteredGamesCalendar);
+  });
 
   res
     .status(200)
     .setHeader("Content-Type", "text/calendar")
     .send(outputIcsCalendar);
+}
+
+function getTeamsFromRequest(req: NextApiRequest): string[] {
+  let teams: string[] = [];
+  if (req.query.teams) {
+    teams = Array.isArray(req.query.teams)
+      ? req.query.teams
+      : req.query.teams.split(",");
+  }
+  teams.sort((a, b) => a.localeCompare(b));
+  return teams;
 }
 
 async function fetchAllGames() {
@@ -117,26 +119,27 @@ function buildVEvents(games: Game[]): ics.VEvent[] {
       ...(g.broadcasters.home_video_fr?.map((b) => b.name) ?? []),
     ].join(", ");
 
+    const lb = "<br>";
     let description =
       `Game Center: https://www.thepwhl.com/en/stats/game-center/${g.game_id}` +
-      `\r\n Venue: ${g.venue_name} ${g.venue_url ? "- " + g.venue_url : ""}` +
-      `\r\n Tickets: ${g.tickets_url}` +
-      `\r\n Broadcasts: ${broadcasters}` +
-      `\r\n YouTube: https://www.youtube.com/@thepwhlofficial`;
+      `${lb}Venue: ${g.venue_name} ${g.venue_url ? "- " + g.venue_url : ""}` +
+      `${lb}Tickets: ${g.tickets_url}` +
+      `${lb}Broadcasts: ${broadcasters}` +
+      `${lb}YouTube: https://www.youtube.com/@thepwhlofficial`;
 
     if (start < now) {
       // include scores and links to reports if game start is in the past
       summary = `${g.visiting_team_name} (${g.visiting_goal_count}) @ ${g.home_team_name} (${g.home_goal_count})`;
       description +=
-        `\r\n Status: ${g.game_status}` +
-        `\r\n Game Summary: https://www.thepwhl.com/en/stats/game-summary/${g.game_id}` +
-        `\r\n Game Sheet: https://lscluster.hockeytech.com/game_reports/official-game-report.php?client_code=pwhl&game_id=${g.game_id}&lang_id=1` +
-        `\r\n Game Report: https://lscluster.hockeytech.com/game_reports/text-game-report.php?client_code=pwhl&game_id=${g.game_id}&lang_id=1`;
+        `${lb}Status: ${g.game_status}` +
+        `${lb}Game Summary: https://www.thepwhl.com/en/stats/game-summary/${g.game_id}` +
+        `${lb}Game Sheet: https://lscluster.hockeytech.com/game_reports/official-game-report.php?client_code=pwhl&game_id=${g.game_id}&lang_id=1` +
+        `${lb}Game Report: https://lscluster.hockeytech.com/game_reports/text-game-report.php?client_code=pwhl&game_id=${g.game_id}&lang_id=1`;
     }
 
     const event: ics.VEvent = {
       summary: summary,
-      uid: `${g.client_code}-${g.season_id}-${g.game_id}@hockeytech.com`,
+      uid: `${g.client_code}-s${g.season_id}-g${g.game_id}@hockeytech.com`,
       stamp: startObject,
       start: startObject,
       duration: { hours: 3 },
