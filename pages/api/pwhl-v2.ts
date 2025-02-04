@@ -42,7 +42,7 @@ export default async function handler(
 
   res
     .status(200)
-    // .setHeader("Content-Type", "text/calendar")
+    .setHeader("Content-Type", "text/calendar")
     .send(outputIcsCalendar);
 }
 
@@ -139,7 +139,7 @@ function buildVEvents(games: Game[]): ics.VEvent[] {
 
     const event: ics.VEvent = {
       summary: summary,
-      uid: `${g.client_code}-${g.season_id}-${g.game_id}@hockeytech.com`,
+      uid: `${g.client_code}-s${g.season_id}-g${g.game_id}@hockeytech.com`,
       stamp: startObject,
       start: startObject,
       duration: { hours: 3 },
