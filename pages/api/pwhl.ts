@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import * as ics from "ts-ics";
 import pino from "pino";
+import * as ics from "ts-ics";
 
 const logger = pino();
 

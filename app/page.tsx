@@ -10,15 +10,16 @@ import newyork from "../public/newyork.webp";
 import ottawa from "../public/ottawa.webp";
 import toronto from "../public/toronto.webp";
 
-import React, { useState } from "react";
 import {
+  Box,
+  Grid2 as Grid,
   ToggleButton,
   ToggleButtonGroup,
-  Box,
-  Typography,
   Tooltip,
-  Grid2 as Grid,
+  Typography,
 } from "@mui/material";
+import type React from "react";
+import { useState } from "react";
 
 export default function ToggleButtonsPage() {
   const iconWidth = 140;

@@ -1,13 +1,13 @@
+import type { Game, HockeyTechResponse } from "@/pages/api/types";
 import type { NextApiRequest, NextApiResponse } from "next";
-import * as ics from "ts-ics";
 import pino from "pino";
-import { Game, HockeyTechResponse } from "@/pages/api/types";
+import * as ics from "ts-ics";
 
 const logger = pino();
 
 const scheduleUrl =
   "https://lscluster.hockeytech.com/feed/?feed=modulekit&view=schedule&fmt=json&lang=en" +
-  `&key=446521baf8c38984&client_code=pwhl&season_id=`;
+  "&key=446521baf8c38984&client_code=pwhl&season_id=";
 
 // "all" season IDs (1 through 10)
 const allSeasonIds = Array.from({ length: 10 }, (_, i) => i + 1);
@@ -84,7 +84,7 @@ async function fetchAllGames() {
 
 // filter games by selected teams if specified
 function filterGamesByTeam(allGames: Game[], teams: string[]) {
-  if (teams.length == 0) {
+  if (teams.length === 0) {
     return allGames;
   }
   return allGames.filter((game) => {

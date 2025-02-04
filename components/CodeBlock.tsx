@@ -1,14 +1,14 @@
 "use client";
 
-import React, { useState } from "react";
-import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import CheckIcon from "@mui/icons-material/Check";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import {
-  OutlinedInput,
-  InputAdornment,
-  IconButton,
   Grid2 as Grid,
+  IconButton,
+  InputAdornment,
+  OutlinedInput,
 } from "@mui/material";
+import React, { useState } from "react";
 
 interface CodeBlockProps {
   code: string;
