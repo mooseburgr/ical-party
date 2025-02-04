@@ -8,7 +8,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "format": "prettier . --write"
+    "format": "npx @biomejs/biome check --write ."
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
@@ -27,16 +27,12 @@
     "ts-ics": "^1.6.7"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "^3.2.0",
-    "@eslint/js": "^9.19.0",
+    "@biomejs/biome": "1.9.4",
     "@tailwindcss/postcss": "^4.0.3",
     "@types/node": "^22",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "eslint": "^9.0.0",
-    "eslint-config-next": "15.1.6",
     "postcss": "^8",
-    "prettier": "3.4.2",
     "tailwindcss": "^4.0.0",
     "typescript": "^5"
   }
