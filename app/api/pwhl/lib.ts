@@ -9,7 +9,8 @@ export const CONTENT_TYPE = "content-type";
 export const USER_AGENT = "user-agent";
 export const TEXT_CAL = "text/calendar";
 
-export const FIVE_MIN_S = 60 * 5;
+export const FIVE_MINS_SEC = 60 * 5;
+export const THREE_HOURS_SEC = 60 * 60 * 3;
 
 const scheduleUrl =
   "https://lscluster.hockeytech.com/feed/?feed=modulekit&view=schedule&fmt=json&lang=en" +
@@ -24,19 +25,36 @@ export function getTeamsFromRequest(req: NextRequest): string[] {
   return teams;
 }
 
-function getCurrentSeasonId(): string {
-  return "TODO";
+export async function getCurrentSeasonId(): Promise<number> {
+  let id = 0;
+  try {
+    const seasonResp = await fetch(scheduleUrl, {
+      cache: "force-cache",
+      next: {
+        revalidate: THREE_HOURS_SEC,
+      },
+    });
+    const seasonData: HockeyTechResponse = await seasonResp.json();
+    id = +seasonData.SiteKit.Parameters.season_id;
+  } catch (error) {
+    logger.error({ error }, "Failed to fetch current season ID");
+  }
+  logger.debug("determined current season ID as: %s", id);
+  return id;
 }
 
 export async function fetchAllGames(): Promise<Game[]> {
   const allGames: Game[] = [];
+  const currentSeasonId = await getCurrentSeasonId();
   // iterate over "all" seasons and add each's list of games to a single list
   const seasonPromises = allSeasonIds.map(async (seasonId) => {
     try {
       const seasonResp = await fetch(scheduleUrl + seasonId, {
         cache: "force-cache",
         next: {
-          revalidate: 60 * 60 * 3,
+          // only cache response for 5 min if current season
+          revalidate:
+            seasonId === currentSeasonId ? FIVE_MINS_SEC : THREE_HOURS_SEC,
         },
       });
       const seasonData: HockeyTechResponse = await seasonResp.json();
