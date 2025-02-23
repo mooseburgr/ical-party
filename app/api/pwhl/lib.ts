@@ -20,8 +20,15 @@ const scheduleUrl =
 const allSeasonIds = Array.from({ length: 10 }, (_, i) => i + 1);
 
 export function getTeamsFromRequest(req: NextRequest): string[] {
-  const teams = req.nextUrl.searchParams.getAll("teams");
+  logger.debug("getting teams from request: %s", req.nextUrl.searchParams);
+
+  // handle comma-separated list of teams
+  const teams = req.nextUrl.searchParams.getAll("teams").join(",").split(",");
+
+  // sort teams alphabetically
   teams.sort((a, b) => a.localeCompare(b));
+
+  logger.debug("got teams from request: %s", teams);
   return teams;
 }
 
@@ -73,6 +80,7 @@ export async function fetchAllGames(): Promise<Game[]> {
 
 // filter games by selected teams if specified
 export function filterGamesByTeam(allGames: Game[], teams: string[]): Game[] {
+  logger.debug("filtering with teams: %s", teams);
   if (teams.length === 0) {
     return allGames;
   }

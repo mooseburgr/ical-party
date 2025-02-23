@@ -2,7 +2,6 @@ import { headers } from "next/headers";
 import type { NextRequest } from "next/server";
 import pino from "pino";
 import {
-  CONTENT_TYPE,
   TEXT_CAL,
   USER_AGENT,
   buildVEvents,
@@ -14,8 +13,8 @@ import {
 
 const logger = pino();
 
-// cache our own response for 3 minutes
-export const revalidate = 180;
+// cache our own response for 2 minutes
+export const revalidate = 120;
 
 export async function GET(req: NextRequest) {
   const teams = getTeamsFromRequest(req);
