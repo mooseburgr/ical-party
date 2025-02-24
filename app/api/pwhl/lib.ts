@@ -1,9 +1,16 @@
-import type { Game, HockeyTechResponse } from "@/pages/api/types";
-import type { NextApiRequest, NextApiResponse } from "next";
+import type { Game, HockeyTechResponse } from "@/app/api/pwhl/types";
+import type { NextRequest } from "next/server";
 import pino from "pino";
 import * as ics from "ts-ics";
 
 const logger = pino();
+
+export const CONTENT_TYPE = "content-type";
+export const USER_AGENT = "user-agent";
+export const TEXT_CAL = "text/calendar";
+
+export const FIVE_MINS_SEC = 60 * 5;
+export const THREE_HOURS_SEC = 60 * 60 * 3;
 
 const scheduleUrl =
   "https://lscluster.hockeytech.com/feed/?feed=modulekit&view=schedule&fmt=json&lang=en" +
@@ -12,60 +19,49 @@ const scheduleUrl =
 // "all" season IDs (1 through 10)
 const allSeasonIds = Array.from({ length: 10 }, (_, i) => i + 1);
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse<string>,
-) {
-  const teams = getTeamsFromRequest(req);
+export function getTeamsFromRequest(req: NextRequest): string[] {
+  logger.debug("getting teams from request: %s", req.nextUrl.searchParams);
 
-  const allGames = await fetchAllGames();
+  // handle comma-separated list of teams
+  const teams = req.nextUrl.searchParams.getAll("teams").join(",").split(",");
 
-  const filteredGames = filterGamesByTeam(allGames, teams);
-
-  const icsEvents = buildVEvents(filteredGames);
-
-  logger.info(
-    `filtered w '%s' down to %s out of %s total PWHL games from user-agent '%s'`,
-    teams,
-    filteredGames?.length,
-    allGames?.length,
-    req.headers["user-agent"],
-  );
-
-  const teamsDisplay = teams.length > 0 ? teams : "all";
-  const outputIcsCalendar = ics.generateIcsCalendar({
-    prodId: `-//ical-party//pwhl//${teamsDisplay}//EN`,
-    version: "2.0",
-    events: icsEvents,
-    name: `PWHL Games [${teamsDisplay}]`,
-  });
-
-  res
-    .status(200)
-    .setHeader("Content-Type", "text/calendar")
-    .send(outputIcsCalendar);
-}
-
-function getTeamsFromRequest(req: NextApiRequest): string[] {
-  let teams: string[] = [];
-  if (req.query.teams) {
-    teams = Array.isArray(req.query.teams)
-      ? req.query.teams
-      : req.query.teams.split(",");
-  }
+  // sort teams alphabetically
   teams.sort((a, b) => a.localeCompare(b));
+
+  logger.debug("got teams from request: %s", teams);
   return teams;
 }
 
-async function fetchAllGames() {
+export async function getCurrentSeasonId(): Promise<number> {
+  let id = 0;
+  try {
+    const seasonResp = await fetch(scheduleUrl, {
+      cache: "force-cache",
+      next: {
+        revalidate: THREE_HOURS_SEC,
+      },
+    });
+    const seasonData: HockeyTechResponse = await seasonResp.json();
+    id = +seasonData.SiteKit.Parameters.season_id;
+  } catch (error) {
+    logger.error({ error }, "Failed to fetch current season ID");
+  }
+  logger.debug("determined current season ID as: %s", id);
+  return id;
+}
+
+export async function fetchAllGames(): Promise<Game[]> {
   const allGames: Game[] = [];
+  const currentSeasonId = await getCurrentSeasonId();
   // iterate over "all" seasons and add each's list of games to a single list
   const seasonPromises = allSeasonIds.map(async (seasonId) => {
     try {
       const seasonResp = await fetch(scheduleUrl + seasonId, {
         cache: "force-cache",
         next: {
-          revalidate: 60 * 60 * 3,
+          // only cache response for 5 min if current season
+          revalidate:
+            seasonId === currentSeasonId ? FIVE_MINS_SEC : THREE_HOURS_SEC,
         },
       });
       const seasonData: HockeyTechResponse = await seasonResp.json();
@@ -83,7 +79,8 @@ async function fetchAllGames() {
 }
 
 // filter games by selected teams if specified
-function filterGamesByTeam(allGames: Game[], teams: string[]) {
+export function filterGamesByTeam(allGames: Game[], teams: string[]): Game[] {
+  logger.debug("filtering with teams: %s", teams);
   if (teams.length === 0) {
     return allGames;
   }
@@ -101,7 +98,7 @@ function filterGamesByTeam(allGames: Game[], teams: string[]) {
 }
 
 // map games to VEvents
-function buildVEvents(games: Game[]): ics.VEvent[] {
+export function buildVEvents(games: Game[]): ics.VEvent[] {
   const now = new Date();
   return games.map((g) => {
     // parse ISO8601 format string into Date
@@ -133,8 +130,8 @@ function buildVEvents(games: Game[]): ics.VEvent[] {
       description +=
         `${lb}${lb}Status: ${g.game_status}` +
         `${lb}Game Summary: https://www.thepwhl.com/en/stats/game-summary/${g.game_id}` +
-        `${lb}Game Sheet: https://lscluster.hockeytech.com/game_reports/official-game-report.php?client_code=pwhl&game_id=${g.game_id}&lang_id=1` +
-        `${lb}Game Report: https://lscluster.hockeytech.com/game_reports/text-game-report.php?client_code=pwhl&game_id=${g.game_id}&lang_id=1`;
+        `${lb}Game Sheet: https://lscluster.hockeytech.com/game_reports/official-game-report.php?client_code=pwhl&game_id=${g.game_id}` +
+        `${lb}Game Report: https://lscluster.hockeytech.com/game_reports/text-game-report.php?client_code=pwhl&game_id=${g.game_id}`;
     }
 
     const event: ics.VEvent = {
@@ -152,4 +149,18 @@ function buildVEvents(games: Game[]): ics.VEvent[] {
     logger.debug({ g, event }, "built VEvent from game");
     return event;
   });
+}
+
+export function generateIcalContent(
+  teams: string[],
+  icsEvents: ics.VEvent[],
+): string {
+  const teamsDisplay = teams.length > 0 ? teams : "all";
+  const outputIcsCalendar = ics.generateIcsCalendar({
+    prodId: `-//ical-party//pwhl//${teamsDisplay}//EN`,
+    version: "2.0",
+    events: icsEvents,
+    name: `PWHL Games [${teamsDisplay}]`,
+  });
+  return outputIcsCalendar;
 }
