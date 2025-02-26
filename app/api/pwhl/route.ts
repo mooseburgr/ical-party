@@ -37,6 +37,9 @@ export async function GET(req: NextRequest) {
   const outputIcsCalendar = generateIcalContent(teams, icsEvents);
 
   return new Response(outputIcsCalendar, {
-    headers: { "content-type": TEXT_CAL },
+    headers: {
+      "content-type": TEXT_CAL,
+      "cache-control": `public, max-age=${revalidate}, must-revalidate`,
+    },
   });
 }
