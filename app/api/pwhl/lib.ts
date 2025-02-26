@@ -142,7 +142,6 @@ export function buildVEvents(games: Game[]): ics.VEvent[] {
       duration: { hours: 3 },
       location: `${g.venue_name}, ${g.venue_location}`,
       description: description,
-      comment: "test comment plz ignore",
       url: g.mobile_calendar,
       status: "CONFIRMED",
     };
