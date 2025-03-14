@@ -24,7 +24,7 @@
     "react": "^19",
     "react-dom": "^19",
     "sharp": "^0.33.5",
-    "ts-ics": "^1.6.7"
+    "ts-ics": "^2.0.0"
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
