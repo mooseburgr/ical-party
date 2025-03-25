@@ -1,6 +1,7 @@
+import { parseIcsCalendar } from "@ts-ics/schema-zod";
 import type { NextApiRequest, NextApiResponse } from "next";
 import pino from "pino";
-import * as ics from "ts-ics";
+import { generateIcsCalendar } from "ts-ics";
 
 const logger = pino();
 
@@ -29,7 +30,7 @@ export default async function handler(
     );
   }
 
-  const allGamesCalendar = ics.parseIcsCalendar(await allGamesResponse.text());
+  const allGamesCalendar = parseIcsCalendar(await allGamesResponse.text());
 
   // filter for teams
   const filteredGames = allGamesCalendar.events?.filter((game) => {
@@ -54,7 +55,7 @@ export default async function handler(
     events: filteredGames,
     name: "PWHL Games",
   };
-  const outputIcsCalendar = ics.generateIcsCalendar(filteredGamesCalendar);
+  const outputIcsCalendar = generateIcsCalendar(filteredGamesCalendar);
 
   res
     .status(200)
