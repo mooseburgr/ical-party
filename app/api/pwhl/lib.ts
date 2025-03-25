@@ -97,13 +97,13 @@ export function filterGamesByTeam(allGames: Game[], teams: string[]): Game[] {
   });
 }
 
-// map games to VEvents
-export function buildVEvents(games: Game[]): ics.VEvent[] {
+// map games to IcsEvents
+export function buildIcsEvents(games: Game[]): ics.IcsEvent[] {
   const now = new Date();
   return games.map((g) => {
     // parse ISO8601 format string into Date
     const start = new Date(g.GameDateISO8601);
-    const startObject: ics.DateObject = {
+    const startObject: ics.IcsDateObject = {
       date: start,
       type: "DATE-TIME",
     };
@@ -134,7 +134,7 @@ export function buildVEvents(games: Game[]): ics.VEvent[] {
         `${lb}Game Report: https://lscluster.hockeytech.com/game_reports/text-game-report.php?client_code=pwhl&game_id=${g.game_id}`;
     }
 
-    const event: ics.VEvent = {
+    const event: ics.IcsEvent = {
       summary: summary,
       uid: `${g.client_code}-s${g.season_id}-g${g.game_id}@hockeytech.com`,
       stamp: startObject,
@@ -145,14 +145,14 @@ export function buildVEvents(games: Game[]): ics.VEvent[] {
       url: g.mobile_calendar,
       status: "CONFIRMED",
     };
-    logger.debug({ g, event }, "built VEvent from game");
+    logger.debug({ g, event }, "built IcsEvent from game");
     return event;
   });
 }
 
 export function generateIcalContent(
   teams: string[],
-  icsEvents: ics.VEvent[],
+  icsEvents: ics.IcsEvent[],
 ): string {
   const teamsDisplay = teams.length > 0 ? teams : "all";
   const outputIcsCalendar = ics.generateIcsCalendar({

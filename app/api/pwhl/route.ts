@@ -4,7 +4,7 @@ import pino from "pino";
 import {
   TEXT_CAL,
   USER_AGENT,
-  buildVEvents,
+  buildIcsEvents,
   fetchAllGames,
   filterGamesByTeam,
   generateIcalContent,
@@ -24,7 +24,7 @@ export async function GET(req: NextRequest) {
 
   const filteredGames = filterGamesByTeam(allGames, teams);
 
-  const icsEvents = buildVEvents(filteredGames);
+  const icsEvents = buildIcsEvents(filteredGames);
 
   logger.info(
     `filtered w '%s' down to %s out of %s total PWHL games from user-agent '%s'`,

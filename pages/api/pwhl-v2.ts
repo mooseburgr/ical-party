@@ -1,6 +1,6 @@
 import {
   USER_AGENT,
-  buildVEvents,
+  buildIcsEvents,
   fetchAllGames,
   filterGamesByTeam,
   generateIcalContent,
@@ -20,7 +20,7 @@ export default async function handler(
 
   const filteredGames = filterGamesByTeam(allGames, teams);
 
-  const icsEvents = buildVEvents(filteredGames);
+  const icsEvents = buildIcsEvents(filteredGames);
 
   logger.info(
     `filtered w '%s' down to %s out of %s total PWHL games from user-agent '%s'`,
