@@ -24,7 +24,7 @@
     "pino": "^9.6.0",
     "react": "^19",
     "react-dom": "^19",
-    "sharp": "^0.33.5",
+    "sharp": "^0.34.0",
     "ts-ics": "^2.0.1"
   },
   "devDependencies": {
