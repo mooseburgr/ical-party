@@ -3,7 +3,7 @@
 import CheckIcon from "@mui/icons-material/Check";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import {
-  Grid2 as Grid,
+  Grid,
   IconButton,
   InputAdornment,
   OutlinedInput,
