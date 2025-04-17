@@ -12,7 +12,7 @@ import toronto from "../public/toronto.webp";
 
 import {
   Box,
-  Grid2 as Grid,
+  Grid,
   ToggleButton,
   ToggleButtonGroup,
   Tooltip,
