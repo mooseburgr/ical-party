@@ -136,7 +136,7 @@ export function buildIcsEvents(games: Game[]): ics.IcsEvent[] {
 
     const event: ics.IcsEvent = {
       summary: summary,
-      uid: `${g.client_code}-s${g.season_id}-g${g.game_id}@hockeytech.com`,
+      uid: `${g.client_code}-s${g.season_id}-g${g.game_id}-sts${g.game_status}@hockeytech.com`,
       stamp: startObject,
       start: startObject,
       duration: { hours: 3 },
