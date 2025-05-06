@@ -2,12 +2,7 @@
 
 import CheckIcon from "@mui/icons-material/Check";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
-import {
-  Grid,
-  IconButton,
-  InputAdornment,
-  OutlinedInput,
-} from "@mui/material";
+import { Grid, IconButton, InputAdornment, OutlinedInput } from "@mui/material";
 import React, { useState } from "react";
 
 interface CodeBlockProps {

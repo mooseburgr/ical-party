@@ -23,10 +23,14 @@ export function getTeamsFromRequest(req: NextRequest): string[] {
   logger.debug("getting teams from request: %s", req.nextUrl.searchParams);
 
   // handle comma-separated list of teams
-  const teams = req.nextUrl.searchParams.getAll("teams").join(",").split(",");
+  let teams = req.nextUrl.searchParams.getAll("teams").join(",").split(",");
 
-  // sort teams alphabetically
-  teams.sort((a, b) => a.localeCompare(b));
+  // remove empty string and duplicates, sort alphabetically
+  teams = teams
+    .filter((team) => team.trim() !== "")
+    .map((team) => team.trim())
+    .filter((team, index, self) => self.indexOf(team) === index)
+    .sort((a, b) => a.localeCompare(b));
 
   logger.debug("got teams from request: %s", teams);
   return teams;
@@ -102,7 +106,7 @@ export function buildIcsEvents(games: Game[]): ics.IcsEvent[] {
   const now = new Date();
   return games.map((g) => {
     // parse ISO8601 format string into Date
-    const start = new Date(g.GameDateISO8601);
+    const start = getStartDateTime(g);
     const startObject: ics.IcsDateObject = {
       date: start,
       type: "DATE-TIME",
@@ -162,4 +166,19 @@ export function generateIcalContent(
     name: `PWHL Games [${teamsDisplay}]`,
   });
   return outputIcsCalendar;
+}
+
+export function getStartDateTime(game: Partial<Game>): Date {
+  if (game.GameDateISO8601) {
+    return new Date(game.GameDateISO8601);
+  }
+  if (game.game_status === "TBD" && game.date_played) {
+    // use 8am CST to indicate TBD/tentative start time
+    return new Date(`${game.date_played}T13:00:00Z`);
+  }
+  if (game.date_time_played) {
+    return new Date(game.date_time_played);
+  }
+  // default to epoch time if no date is available
+  return new Date(0);
 }
