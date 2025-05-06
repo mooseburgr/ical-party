@@ -126,13 +126,13 @@ export function buildIcsEvents(games: Game[]): ics.IcsEvent[] {
       `${lb}Venue: <a href="${g.venue_url}">${g.venue_name}</a>` +
       `${lb}Tickets: ${g.tickets_url}` +
       `${lb}Broadcasts: ${broadcasters}` +
-      `${lb}YouTube: https://www.youtube.com/@thepwhlofficial`;
+      `${lb}YouTube: https://www.youtube.com/@thepwhlofficial` +
+      `${lb}${lb}Status: ${g.game_status}`;
 
     if (start < now) {
       // include scores and links to reports if game start is in the past
       summary = `${g.visiting_team_name} (${g.visiting_goal_count}) @ ${g.home_team_name} (${g.home_goal_count})`;
       description +=
-        `${lb}${lb}Status: ${g.game_status}` +
         `${lb}Game Summary: https://www.thepwhl.com/en/stats/game-summary/${g.game_id}` +
         `${lb}Game Sheet: https://lscluster.hockeytech.com/game_reports/official-game-report.php?client_code=pwhl&game_id=${g.game_id}` +
         `${lb}Game Report: https://lscluster.hockeytech.com/game_reports/text-game-report.php?client_code=pwhl&game_id=${g.game_id}`;
@@ -140,7 +140,7 @@ export function buildIcsEvents(games: Game[]): ics.IcsEvent[] {
 
     const event: ics.IcsEvent = {
       summary: summary,
-      uid: `${g.client_code}-s${g.season_id}-g${g.game_id}-sts${g.game_status}@hockeytech.com`,
+      uid: `${g.client_code}-s${g.season_id}-g${g.game_id}@hockeytech.com`,
       stamp: startObject,
       start: startObject,
       duration: { hours: 3 },
