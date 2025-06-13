@@ -6,7 +6,7 @@ export function register() {
     instrumentationConfig: {
       fetch: {
         // By default the context is only propagated for the deployment URLs, all other URLs should be enabled explicitly in the list by string prefix or regex.
-        propagateContextUrls: [],
+        propagateContextUrls: [/.*/],
       },
     },
     
