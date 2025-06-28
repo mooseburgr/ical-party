@@ -1,7 +1,7 @@
-import type { Game, HockeyTechResponse } from "@/app/api/pwhl/types";
 import type { NextRequest } from "next/server";
 import pino from "pino";
 import * as ics from "ts-ics";
+import type { Game, HockeyTechResponse } from "@/app/api/pwhl/types";
 
 const logger = pino();
 

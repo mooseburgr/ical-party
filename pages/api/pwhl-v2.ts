@@ -1,12 +1,12 @@
+import type { NextApiRequest, NextApiResponse } from "next";
+import pino from "pino";
 import {
-  USER_AGENT,
   buildIcsEvents,
   fetchAllGames,
   filterGamesByTeam,
   generateIcalContent,
+  USER_AGENT,
 } from "@/app/api/pwhl/lib";
-import type { NextApiRequest, NextApiResponse } from "next";
-import pino from "pino";
 
 const logger = pino();
 

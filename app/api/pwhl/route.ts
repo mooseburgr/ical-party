@@ -2,13 +2,13 @@ import { headers } from "next/headers";
 import type { NextRequest } from "next/server";
 import pino from "pino";
 import {
-  TEXT_CAL,
-  USER_AGENT,
   buildIcsEvents,
   fetchAllGames,
   filterGamesByTeam,
   generateIcalContent,
   getTeamsFromRequest,
+  TEXT_CAL,
+  USER_AGENT,
 } from "./lib";
 
 const logger = pino();
