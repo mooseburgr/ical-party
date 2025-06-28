@@ -13,11 +13,11 @@
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
-    "@emotion/styled": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
     "@mui/icons-material": "^7.1.2",
     "@mui/material": "^7.0.0",
     "@opentelemetry/api": "^1.9.0",
-    "@ts-ics/schema-zod": "^2.1.7",
+    "@ts-ics/schema-zod": "^2.1.8",
     "@vercel/analytics": "^1.5.0",
     "@vercel/otel": "^1.13.0",
     "@vercel/speed-insights": "^1.2.0",
