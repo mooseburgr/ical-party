@@ -12,6 +12,8 @@ export const TEXT_CAL = "text/calendar";
 export const FIVE_MINS_SEC = 60 * 5;
 export const THREE_HOURS_SEC = 60 * 60 * 3;
 
+export const lb = "<br/>";
+
 const scheduleUrl =
   "https://lscluster.hockeytech.com/feed/?feed=modulekit&view=schedule&fmt=json&lang=en" +
   "&key=446521baf8c38984&client_code=pwhl&season_id=";
@@ -120,7 +122,6 @@ export function buildIcsEvents(games: Game[]): ics.IcsEvent[] {
       ...(g.broadcasters.home_video_fr?.map((b) => b.name) ?? []),
     ].join(", ");
 
-    const lb = "<br/>";
     let description =
       `Game Center: https://www.thepwhl.com/en/stats/game-center/${g.game_id}` +
       `${lb}Venue: <a href="${g.venue_url}">${g.venue_name}</a>` +
@@ -159,13 +160,12 @@ export function generateIcalContent(
   icsEvents: ics.IcsEvent[],
 ): string {
   const teamsDisplay = teams.length > 0 ? teams : "all";
-  const outputIcsCalendar = ics.generateIcsCalendar({
+  return ics.generateIcsCalendar({
     prodId: `-//ical-party//pwhl//${teamsDisplay}//EN`,
     version: "2.0",
     events: icsEvents,
     name: `PWHL Games [${teamsDisplay}]`,
   });
-  return outputIcsCalendar;
 }
 
 export function getStartDateTime(game: Partial<Game>): Date {

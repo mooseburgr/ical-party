@@ -34,9 +34,7 @@ export async function GET(req: NextRequest) {
     (await headers()).get(USER_AGENT),
   );
 
-  const outputIcsCalendar = generateIcalContent(teams, icsEvents);
-
-  return new Response(outputIcsCalendar, {
+  return new Response(generateIcalContent(teams, icsEvents), {
     headers: {
       "content-type": TEXT_CAL,
       "cache-control": `public, max-age=${revalidate}, must-revalidate`,

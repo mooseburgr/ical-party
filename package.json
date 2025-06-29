@@ -8,7 +8,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "format": "npx @biomejs/biome check --write .",
+    "format": "npx @biomejs/biome check --write --unsafe .",
     "test": "npx jest"
   },
   "dependencies": {
@@ -22,6 +22,7 @@
     "@vercel/analytics": "^1.5.0",
     "@vercel/otel": "^1.13.0",
     "@vercel/speed-insights": "^1.2.0",
+    "any-date-parser": "^2.2.2",
     "cheerio": "^1.1.0",
     "html-minifier-terser": "^7.2.0",
     "next": "15.3.4",

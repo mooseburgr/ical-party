@@ -1,9 +1,7 @@
-import * as cheerio from "cheerio";
-import { headers } from "next/headers";
 import type { NextRequest } from "next/server";
 import pino from "pino";
-import { TEXT_CAL } from "@/app/api/pwhl/lib";
-import { getScheduleForTeamId, teamIds } from "@/app/api/tkers/lib";
+import { TEXT_CAL, USER_AGENT } from "@/app/api/pwhl/lib";
+import { generateIcalContent, getAllScheduleEvents } from "@/app/api/tkers/lib";
 
 const logger = pino();
 
@@ -12,9 +10,15 @@ const logger = pino();
 export const revalidate = 600;
 
 export async function GET(req: NextRequest) {
-  const result = await getScheduleForTeamId(teamIds[0]);
+  const events = getAllScheduleEvents();
 
-  return new Response(JSON.stringify(result), {
+  logger.info(
+    `fetched %s TKers events from user-agent '%s'`,
+    events.length,
+    req.headers.get(USER_AGENT),
+  );
+
+  return new Response(generateIcalContent(events), {
     headers: {
       "content-type": TEXT_CAL,
       "cache-control": `public, max-age=${revalidate}, must-revalidate`,

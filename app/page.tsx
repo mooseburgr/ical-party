@@ -28,7 +28,7 @@ export default function ToggleButtonsPage() {
   const pwhlUrl = `https://ical-party.vercel.app/api/pwhl?teams=${selectedPwhlTeams.sort().join(",")}`;
 
   const handlePwhlToggle = (
-    event: React.MouseEvent<HTMLElement>,
+    _event: React.MouseEvent<HTMLElement>,
     newSelectedButtons: string[],
   ) => {
     setSelectedPwhlTeams(newSelectedButtons);
