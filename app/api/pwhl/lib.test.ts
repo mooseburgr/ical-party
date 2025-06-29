@@ -119,12 +119,12 @@ describe("getStartDateTime", () => {
       game_status: "TBD",
       date_played: "2024-10-01",
     };
-    const result = getStartDateTime(game);
-    const expectedDate = new Date("2024-10-01T13:00:00Z"); // 8am Central is 1pm UTC
+    const _result = getStartDateTime(game);
+    const _expectedDate = new Date("2024-10-01T13:00:00Z"); // 8am Central is 1pm UTC
   });
 
   it("should handle empty game data", () => {
-    const game = {};
+    const _game = {};
     const result = getStartDateTime({});
     expect(result).toEqual(new Date(0));
   });

@@ -1,7 +1,7 @@
-import ThemeRegistry from "@/components/ThemeRegistry";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata } from "next";
+import ThemeRegistry from "@/components/ThemeRegistry";
 import "./globals.css";
 
 export const metadata: Metadata = {

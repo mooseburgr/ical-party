@@ -1,7 +1,7 @@
 import { registerOTel } from "@vercel/otel";
 
 export function register() {
-  registerOTel({ 
+  registerOTel({
     serviceName: "ical-party",
     instrumentationConfig: {
       fetch: {
@@ -9,6 +9,5 @@ export function register() {
         propagateContextUrls: [/.*/],
       },
     },
-    
-   });
+  });
 }

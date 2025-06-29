@@ -1,15 +1,5 @@
 "use client";
 
-import CodeBlock from "@/components/CodeBlock";
-
-import Image from "next/image";
-import boston from "../public/boston.webp";
-import minnesota from "../public/minnesota.webp";
-import montreal from "../public/montreal.webp";
-import newyork from "../public/newyork.webp";
-import ottawa from "../public/ottawa.webp";
-import toronto from "../public/toronto.webp";
-
 import {
   Box,
   Grid,
@@ -18,8 +8,17 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
+
+import Image from "next/image";
 import type React from "react";
 import { useState } from "react";
+import CodeBlock from "@/components/CodeBlock";
+import boston from "../public/boston.webp";
+import minnesota from "../public/minnesota.webp";
+import montreal from "../public/montreal.webp";
+import newyork from "../public/newyork.webp";
+import ottawa from "../public/ottawa.webp";
+import toronto from "../public/toronto.webp";
 
 export default function ToggleButtonsPage() {
   const iconWidth = 140;
@@ -29,7 +28,7 @@ export default function ToggleButtonsPage() {
   const pwhlUrl = `https://ical-party.vercel.app/api/pwhl?teams=${selectedPwhlTeams.sort().join(",")}`;
 
   const handlePwhlToggle = (
-    event: React.MouseEvent<HTMLElement>,
+    _event: React.MouseEvent<HTMLElement>,
     newSelectedButtons: string[],
   ) => {
     setSelectedPwhlTeams(newSelectedButtons);

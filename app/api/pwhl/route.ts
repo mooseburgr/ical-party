@@ -2,13 +2,13 @@ import { headers } from "next/headers";
 import type { NextRequest } from "next/server";
 import pino from "pino";
 import {
-  TEXT_CAL,
-  USER_AGENT,
   buildIcsEvents,
   fetchAllGames,
   filterGamesByTeam,
   generateIcalContent,
   getTeamsFromRequest,
+  TEXT_CAL,
+  USER_AGENT,
 } from "./lib";
 
 const logger = pino();
@@ -34,9 +34,7 @@ export async function GET(req: NextRequest) {
     (await headers()).get(USER_AGENT),
   );
 
-  const outputIcsCalendar = generateIcalContent(teams, icsEvents);
-
-  return new Response(outputIcsCalendar, {
+  return new Response(generateIcalContent(teams, icsEvents), {
     headers: {
       "content-type": TEXT_CAL,
       "cache-control": `public, max-age=${revalidate}, must-revalidate`,
