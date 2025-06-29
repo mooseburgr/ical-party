@@ -72,16 +72,14 @@ export async function getScheduleEventsForTeamId(
   return joinedEvents;
 }
 
-export function getAllScheduleEvents(): ics.IcsEvent[] {
+export async function getAllScheduleEvents(): Promise<ics.IcsEvent[]> {
   const allEvents: ics.IcsEvent[] = [];
-  tkersTeamIds.forEach((teamId) => {
-    const events = getScheduleEventsForTeamId(teamId);
-    events.then((e) => {
-      e.forEach((event) => {
-        allEvents.push(mapToIcsEvent(event));
-      });
-    });
-  });
+  for (const t of tkersTeamIds) {
+    const events = await getScheduleEventsForTeamId(t);
+    for (const e of events) {
+      allEvents.push(mapToIcsEvent(e));
+    }
+  }
   return allEvents;
 }
 

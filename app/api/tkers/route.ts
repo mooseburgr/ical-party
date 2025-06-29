@@ -10,7 +10,7 @@ const logger = pino();
 export const revalidate = 600;
 
 export async function GET(req: NextRequest) {
-  const events = getAllScheduleEvents();
+  const events = await getAllScheduleEvents();
 
   logger.info(
     `fetched %s TKers events from user-agent '%s'`,
