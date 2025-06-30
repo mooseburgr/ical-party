@@ -135,6 +135,10 @@ function getLeagueIdFromGameId(gameId: string): string {
 export async function getAddress(event: LeagueLabEvent): Promise<string> {
   // e.g. https://cscsports.leaguelab.com/location/6916
 
+  if (!event.locationId) {
+    logger.warn({ event }, "locationId is undefined. Returning fallback address.");
+    return event.location ?? "unknown";
+  }
   const resp = await fetch(
     `https://cscsports.leaguelab.com/location/${event.locationId}`,
     {
