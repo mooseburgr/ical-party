@@ -9,8 +9,7 @@ import type { LeagueLabEvent } from "@/app/api/tkers/types";
 
 const logger = pino();
 
-// TODO remove 875437
-export const tkersTeamIds = [875437, 879554];
+export const tkersTeamIds = [879554];
 
 export async function getScheduleEventsForTeamId(
   teamId: number,
@@ -53,7 +52,8 @@ export async function getScheduleEventsForTeamId(
 
   const joinedEvents: LeagueLabEvent[] = [];
   let wipEvent: LeagueLabEvent = { teamId, teamName };
-  splitEvents.forEach((event) => {
+
+  for (const event of splitEvents) {
     if (!event.gameId) {
       // if no game ID, assume date row, indicating start of new event
       wipEvent = event;
@@ -63,11 +63,12 @@ export async function getScheduleEventsForTeamId(
         ...event,
         date: wipEvent.date,
         leagueId: getLeagueIdFromGameId(event.gameId),
+        locationAddress: await getAddress(event),
       };
 
       joinedEvents.push(wipEvent);
     }
-  });
+  }
 
   return joinedEvents;
 }
@@ -92,8 +93,9 @@ export function mapToIcsEvent(event: LeagueLabEvent): ics.IcsEvent {
 
   const description =
     `${event.teamName} (${event.homeOrVisitor}) vs ${event.opponent}` +
-    `${lb}${event.date} - ${event.time}` +
-    `${lb}${event.location} - ${event.field}` +
+    `${lb}${lb}${event.date} - ${event.time}` +
+    `${lb}${lb}${event.location} - ${event.field}` +
+    `${lb}${event.locationAddress}` +
     `${lb}${lb}Result: ${event.result ?? "TBD"}`;
 
   const result: ics.IcsEvent = {
@@ -102,7 +104,7 @@ export function mapToIcsEvent(event: LeagueLabEvent): ics.IcsEvent {
     stamp: startObject,
     start: startObject,
     duration: { hours: 1 },
-    location: event.location,
+    location: event.locationAddress,
     description: description,
     url: `https://cscsports.leaguelab.com/team/${event.teamId}`,
     status: "CONFIRMED",
@@ -113,9 +115,9 @@ export function mapToIcsEvent(event: LeagueLabEvent): ics.IcsEvent {
 
 export function getStartDateTime(game: Partial<LeagueLabEvent>): Date {
   const currentYear = new Date().getFullYear();
-  // convert "Thursday, July 3 2025 at 7:40 PM" to a Date object
+  // convert "Thursday, July 3 2025 at 7:40 PM America/Chicago" to a Date object
   const result = parser.fromString(
-    `${game.date}, ${currentYear} at ${game.time}`,
+    `${game.date}, ${currentYear} at ${game.time} America/Chicago`,
     "en-US",
   );
   if (result.isValid()) {
@@ -130,11 +132,27 @@ function getLeagueIdFromGameId(gameId: string): string {
   return gameId.substring(gameId.lastIndexOf("_") + 1);
 }
 
-function _getAddress(event: LeagueLabEvent): string | undefined {
-  // TODO get address
-  //https://cscsports.leaguelab.com/location/6916
+export async function getAddress(event: LeagueLabEvent): Promise<string> {
+  // e.g. https://cscsports.leaguelab.com/location/6916
 
-  return event.location;
+  if (!event.locationId) {
+    logger.warn({ event }, "locationId is undefined. Returning fallback address.");
+    return event.location ?? "unknown";
+  }
+  const resp = await fetch(
+    `https://cscsports.leaguelab.com/location/${event.locationId}`,
+    {
+      cache: "force-cache",
+      next: {
+        revalidate: revalidate,
+      },
+    },
+  );
+  const $html = cheerio.load(await resp.text());
+  const $addressDiv = $html(`#details_${event.locationId} > div.address`);
+  const address = $addressDiv.text().trim();
+
+  return address ?? event.location ?? "unknown";
 }
 
 export function generateIcalContent(icsEvents: ics.IcsEvent[]): string {
