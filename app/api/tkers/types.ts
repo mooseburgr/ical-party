@@ -7,6 +7,7 @@ export interface LeagueLabEvent {
   time?: string;
   location?: string;
   locationId?: string;
+  locationAddress?: string;
   field?: string;
   opponent?: string;
   homeOrVisitor?: string;
