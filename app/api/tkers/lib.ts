@@ -2,7 +2,6 @@ import parser from "any-date-parser";
 import * as cheerio from "cheerio";
 import { minify } from "html-minifier-terser";
 import { DateTime } from "luxon";
-import { dateTimeFromHuman } from "luxon-parser";
 import pino from "pino";
 import * as ics from "ts-ics";
 import { lb } from "@/app/api/pwhl/lib";
@@ -119,16 +118,15 @@ export function getStartDateTime(game: Partial<LeagueLabEvent>): Date {
   const currentYear = new Date().getFullYear();
   // parse "Thursday, July 3 2025 at 7:40 PM" to a DateTime object
   const humanString = `${game.date}, ${currentYear} at ${game.time}`;
-  const dateTime = dateTimeFromHuman(humanString, { zone: "America/Chicago" });
 
-  const attempt = parser.attempt(humanString);
-  const attemptDateTime = DateTime.fromObject(attempt, {
+  const parsedObject = parser.attempt(humanString);
+  const dateTime = DateTime.fromObject(parsedObject, {
     zone: "America/Chicago",
   });
 
-  if (attemptDateTime.isValid) {
-    logger.info({ dateTime, attemptDateTime }, "parsed date successfully");
-    return new Date(attemptDateTime.toString());
+  if (dateTime.isValid) {
+    logger.info({ attemptDateTime: dateTime }, "parsed date successfully");
+    return new Date(dateTime.toString());
   }
 
   // default to epoch time if invalid date
@@ -160,9 +158,16 @@ export async function getAddress(event: LeagueLabEvent): Promise<string> {
   );
   const $html = cheerio.load(await resp.text());
   const $addressDiv = $html(`#details_${event.locationId} > div.address`);
-  const address = $addressDiv.text().trim();
+  let address = $addressDiv.text().trim();
+  // replaces newlines and tabs
+  address = address.replaceAll("\n", ", ").replaceAll("\t", " ");
+  // remove any excessive spaces
+  address = address.replace(/\s+/g, " ").trim();
+  address = address.replaceAll(" ,", ",");
 
-  return address ?? event.location ?? "unknown";
+  const result = address ?? event.location ?? "unknown";
+  logger.info({ event, result }, "resultant address");
+  return result;
 }
 
 export function generateIcalContent(icsEvents: ics.IcsEvent[]): string {
