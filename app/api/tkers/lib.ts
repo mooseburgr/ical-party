@@ -1,5 +1,7 @@
+import parser from "any-date-parser";
 import * as cheerio from "cheerio";
 import { minify } from "html-minifier-terser";
+import { DateTime } from "luxon";
 import { dateTimeFromHuman } from "luxon-parser";
 import pino from "pino";
 import * as ics from "ts-ics";
@@ -116,16 +118,17 @@ export function mapToIcsEvent(event: LeagueLabEvent): ics.IcsEvent {
 export function getStartDateTime(game: Partial<LeagueLabEvent>): Date {
   const currentYear = new Date().getFullYear();
   // parse "Thursday, July 3 2025 at 7:40 PM" to a DateTime object
-  const dateTime = dateTimeFromHuman(
-    `${game.date}, ${currentYear} at ${game.time}`,
-    {
-      zone: "America/Chicago",
-    },
-  );
+  const humanString = `${game.date}, ${currentYear} at ${game.time}`;
+  const dateTime = dateTimeFromHuman(humanString, { zone: "America/Chicago" });
 
-  if (dateTime.isValid) {
-    logger.debug({ dateTime }, "parsed date successfully");
-    return new Date(dateTime.toString());
+  const attempt = parser.attempt(humanString);
+  const attemptDateTime = DateTime.fromObject(attempt, {
+    zone: "America/Chicago",
+  });
+
+  if (attemptDateTime.isValid) {
+    logger.info({ dateTime, attemptDateTime }, "parsed date successfully");
+    return new Date(attemptDateTime.toString());
   }
 
   // default to epoch time if invalid date
