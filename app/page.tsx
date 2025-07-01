@@ -18,7 +18,9 @@ import minnesota from "../public/minnesota.webp";
 import montreal from "../public/montreal.webp";
 import newyork from "../public/newyork.webp";
 import ottawa from "../public/ottawa.webp";
+import seattle from "../public/seattle.webp";
 import toronto from "../public/toronto.webp";
+import vancouver from "../public/vancouver.webp";
 
 export default function ToggleButtonsPage() {
   const iconWidth = 140;
@@ -79,9 +81,21 @@ export default function ToggleButtonsPage() {
                 </ToggleButton>
               </Tooltip>
 
+              <Tooltip title="PWHL Seattle">
+                <ToggleButton value="Seattle" aria-label="Seattle">
+                  <Image src={seattle} alt="Seattle" width={iconWidth} />
+                </ToggleButton>
+              </Tooltip>
+
               <Tooltip title="Toronto Sceptres">
                 <ToggleButton value="Toronto" aria-label="Toronto">
                   <Image src={toronto} alt="Toronto" width={iconWidth} />
+                </ToggleButton>
+              </Tooltip>
+
+              <Tooltip title="PWHL Vancouver">
+                <ToggleButton value="Vancouver" aria-label="Vancouver">
+                  <Image src={vancouver} alt="Vancouver" width={iconWidth} />
                 </ToggleButton>
               </Tooltip>
             </Grid>
