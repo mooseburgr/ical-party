@@ -13,7 +13,7 @@ export async function GET(req: NextRequest) {
   const events = await getAllScheduleEvents();
 
   logger.info(
-    `fetched %s TKers events from user-agent '%s'`,
+    `fetched %s TKers events for user-agent '%s'`,
     events.length,
     req.headers.get(USER_AGENT),
   );

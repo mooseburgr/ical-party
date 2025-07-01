@@ -1,6 +1,6 @@
-import parser from "any-date-parser";
 import * as cheerio from "cheerio";
 import { minify } from "html-minifier-terser";
+import { dateTimeFromHuman } from "luxon-parser";
 import pino from "pino";
 import * as ics from "ts-ics";
 import { lb } from "@/app/api/pwhl/lib";
@@ -115,13 +115,17 @@ export function mapToIcsEvent(event: LeagueLabEvent): ics.IcsEvent {
 
 export function getStartDateTime(game: Partial<LeagueLabEvent>): Date {
   const currentYear = new Date().getFullYear();
-  // convert "Thursday, July 3 2025 at 7:40 PM America/Chicago" to a Date object
-  const result = parser.fromString(
-    `${game.date}, ${currentYear} at ${game.time} America/Chicago`,
-    "en-US",
+  // parse "Thursday, July 3 2025 at 7:40 PM" to a DateTime object
+  const dateTime = dateTimeFromHuman(
+    `${game.date}, ${currentYear} at ${game.time}`,
+    {
+      zone: "America/Chicago",
+    },
   );
-  if (result.isValid()) {
-    return new Date(result.toISOString());
+
+  if (dateTime.isValid) {
+    logger.debug({ dateTime }, "parsed date successfully");
+    return new Date(dateTime.toString());
   }
 
   // default to epoch time if invalid date
@@ -136,7 +140,10 @@ export async function getAddress(event: LeagueLabEvent): Promise<string> {
   // e.g. https://cscsports.leaguelab.com/location/6916
 
   if (!event.locationId) {
-    logger.warn({ event }, "locationId is undefined. Returning fallback address.");
+    logger.warn(
+      { event },
+      "locationId is undefined, returning fallback address",
+    );
     return event.location ?? "unknown";
   }
   const resp = await fetch(
