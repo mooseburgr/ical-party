@@ -4,11 +4,11 @@ import { minify } from "html-minifier-terser";
 import { DateTime } from "luxon";
 import pino from "pino";
 import * as ics from "ts-ics";
-import { lb } from "@/app/api/pwhl/lib";
 import { revalidate } from "@/app/api/tkers/route";
 import type { LeagueLabEvent } from "@/app/api/tkers/types";
 
 const logger = pino();
+const lb = "\n";
 
 export const tkersTeamIds = [879554];
 
