@@ -178,6 +178,6 @@ export function generateIcalContent(icsEvents: ics.IcsEvent[]): string {
     name: `Thursday Kickers Schedule`,
     nonStandard: {
       publishedTtl: `PT${revalidate}S`,
-    }
+    },
   });
 }

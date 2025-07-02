@@ -1,6 +1,7 @@
 import type { NextRequest } from "next/server";
 import pino from "pino";
 import * as ics from "ts-ics";
+import { revalidate } from "@/app/api/pwhl/route";
 import type { Game, HockeyTechResponse } from "@/app/api/pwhl/types";
 
 const logger = pino();
@@ -165,6 +166,9 @@ export function generateIcalContent(
     version: "2.0",
     events: icsEvents,
     name: `PWHL Games [${teamsDisplay}]`,
+    nonStandard: {
+      publishedTtl: `PT${revalidate}S`,
+    },
   });
 }
 
