@@ -2,6 +2,7 @@
 
 import {
   Box,
+  Button,
   Grid,
   ToggleButton,
   ToggleButtonGroup,
@@ -105,6 +106,29 @@ export default function ToggleButtonsPage() {
         <Grid size={{ xs: 12, md: 8 }}>
           <Typography>Add URL to your calendar app:</Typography>
           <CodeBlock code={pwhlUrl} />
+
+          <Box sx={{ display: "flex", gap: 2, mt: 2 }}>
+            <Button
+              variant="contained"
+              color="primary"
+              href={`https://calendar.google.com/calendar/u/0/r?cid=${encodeURIComponent(
+                pwhlUrl.replace("https://", "webcal://"),
+              )}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Subscribe in Google Calendar
+            </Button>
+            <Button
+              variant="contained"
+              color="secondary"
+              href={`${pwhlUrl.replace("https://", "webcal://")}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Subscribe in Other Calendar
+            </Button>
+          </Box>
         </Grid>
       </Grid>
     </Box>
