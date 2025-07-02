@@ -152,7 +152,8 @@ export async function getAddress(event: LeagueLabEvent): Promise<string> {
     {
       cache: "force-cache",
       next: {
-        revalidate: revalidate,
+        // cache for 12 hours
+        revalidate: 12 * 60 * 60,
       },
     },
   );
