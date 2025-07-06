@@ -44,7 +44,7 @@ export async function getScheduleEventsForTeamId(
       field: $tr.find("td.gameLocation").contents().last().text().trim(),
       opponent: $tr.find("td.opponent a").text().trim(),
       homeOrVisitor: $tr.find("div.homeOrVisitor").text().trim(),
-      result: $tr.find("td.result").html()?.trim(),
+      result: cleanGameResult($tr.find("td.result").html()?.trim()),
     };
 
     logger.debug(`${i}: ${$tr} - mapped to: ${JSON.stringify(event)}`);
@@ -159,12 +159,8 @@ export async function getAddress(event: LeagueLabEvent): Promise<string> {
   );
   const $html = cheerio.load(await resp.text());
   const $addressDiv = $html(`#details_${event.locationId} > div.address`);
-  let address = $addressDiv.text().trim();
-  // replaces newlines and tabs
-  address = address.replaceAll("\n", ", ").replaceAll("\t", " ");
-  // remove any excessive spaces
-  address = address.replace(/\s+/g, " ").trim();
-  address = address.replaceAll(" ,", ",");
+
+  const address = cleanAddress($addressDiv.text().trim());
 
   const result = address ?? event.location ?? "unknown";
   logger.info({ event, result }, "resultant address");
@@ -181,4 +177,19 @@ export function generateIcalContent(icsEvents: ics.IcsEvent[]): string {
       publishedTtl: `PT${revalidate}S`,
     },
   });
+}
+
+function cleanAddress(address: string): string {
+  // replace newlines and tabs
+  address = address.replaceAll("\n", ", ").replaceAll("\t", " ");
+  // remove any excessive spaces
+  address = address.replace(/\s+/g, " ").trim();
+  address = address.replaceAll(" ,", ",");
+  return address;
+}
+
+function cleanGameResult(result?: string): string {
+  if (!result) return "TBD";
+
+  return result.replaceAll("<br>", "\n").replaceAll("&nbsp;", " ").trim();
 }
