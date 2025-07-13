@@ -91,13 +91,15 @@ export function mapToIcsEvent(event: LeagueLabEvent): ics.IcsEvent {
     date: start,
     type: "DATE-TIME",
   };
+  const url = `https://cscsports.leaguelab.com/team/${event.teamId}`;
 
   const description =
     `${event.teamName} (${event.homeOrVisitor}) vs ${event.opponent}` +
     `${lb}${lb}${event.date} - ${event.time}` +
     `${lb}${lb}${event.location} - ${event.field}` +
     `${lb}${event.locationAddress}` +
-    `${lb}${lb}Result: ${event.result ?? "TBD"}`;
+    `${lb}${lb}Result: ${event.result ?? "TBD"}` +
+    `${lb}${lb}${url}`;
 
   const result: ics.IcsEvent = {
     summary: `${event.teamName} vs ${event.opponent} @ ${event.location} - ${event.field}`,
@@ -107,7 +109,7 @@ export function mapToIcsEvent(event: LeagueLabEvent): ics.IcsEvent {
     duration: { hours: 1 },
     location: event.locationAddress,
     description: description,
-    url: `https://cscsports.leaguelab.com/team/${event.teamId}`,
+    url: url,
     status: "CONFIRMED",
   };
   logger.debug({ event, result }, "mapped LeagueLabEvent to ics.IcsEvent");
