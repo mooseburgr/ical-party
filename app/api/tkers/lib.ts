@@ -10,7 +10,7 @@ import type { LeagueLabEvent } from "@/app/api/tkers/types";
 const logger = pino();
 const lb = "\n";
 
-export const tkersTeamIds = [879554];
+export const tkersTeamIds = [879554, 897061];
 
 export async function getScheduleEventsForTeamId(
   teamId: number,
