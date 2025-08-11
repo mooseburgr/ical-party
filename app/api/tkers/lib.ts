@@ -31,6 +31,10 @@ export async function getScheduleEventsForTeamId(
   const splitEvents: LeagueLabEvent[] = [];
   scheduleTable.children().each((i, el) => {
     const $tr = $html(el);
+    if ($tr.text().trim() === "PLAYOFFS") {
+      logger.debug(`${i}: ${$tr} - discarding playoffs banner row`);
+      return;
+    }
 
     const event: LeagueLabEvent = {
       teamId,
@@ -86,6 +90,8 @@ export async function getAllScheduleEvents(): Promise<ics.IcsEvent[]> {
 }
 
 export function mapToIcsEvent(event: LeagueLabEvent): ics.IcsEvent {
+  const uid = `${event.gameId ?? `${event.teamId}-${event.date}-${event.time}`}-${event.result?.replaceAll("\n", "")}`;
+
   const start = getStartDateTime(event);
   const startObject: ics.IcsDateObject = {
     date: start,
@@ -103,7 +109,7 @@ export function mapToIcsEvent(event: LeagueLabEvent): ics.IcsEvent {
 
   const result: ics.IcsEvent = {
     summary: `${event.teamName} vs ${event.opponent} @ ${event.location} - ${event.field}`,
-    uid: event.gameId ?? `${event.teamId}-${event.date}-${event.time}`,
+    uid: uid,
     stamp: startObject,
     start: startObject,
     duration: { hours: 1 },
