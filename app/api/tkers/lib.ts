@@ -2,6 +2,7 @@ import parser from "any-date-parser";
 import * as cheerio from "cheerio";
 import { minify } from "html-minifier-terser";
 import { DateTime } from "luxon";
+import objectHash from "object-hash";
 import pino from "pino";
 import * as ics from "ts-ics";
 import { revalidate } from "@/app/api/tkers/route";
@@ -90,7 +91,8 @@ export async function getAllScheduleEvents(): Promise<ics.IcsEvent[]> {
 }
 
 export function mapToIcsEvent(event: LeagueLabEvent): ics.IcsEvent {
-  const uid = `${event.gameId ?? `${event.teamId}-${event.date}-${event.time}`}-${event.result?.replaceAll("\n", "")}`;
+  // hash the whole event so a new UID is generated if anything changes
+  const uid = `${event.gameId}_${objectHash.sha1(event)}`;
 
   const start = getStartDateTime(event);
   const startObject: ics.IcsDateObject = {
