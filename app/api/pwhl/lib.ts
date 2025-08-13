@@ -3,6 +3,7 @@ import pino from "pino";
 import * as ics from "ts-ics";
 import { revalidate } from "@/app/api/pwhl/route";
 import type { Game, HockeyTechResponse } from "@/app/api/pwhl/types";
+import { hash } from "@/app/api/tkers/lib";
 
 const logger = pino();
 
@@ -19,8 +20,8 @@ const scheduleUrl =
   "https://lscluster.hockeytech.com/feed/?feed=modulekit&view=schedule&fmt=json&lang=en" +
   "&key=446521baf8c38984&client_code=pwhl&season_id=";
 
-// "all" season IDs (1 through 10)
-const allSeasonIds = Array.from({ length: 10 }, (_, i) => i + 1);
+// "all" season IDs (1 through 15)
+const allSeasonIds = Array.from({ length: 15 }, (_, i) => i + 1);
 
 export function getTeamsFromRequest(req: NextRequest): string[] {
   logger.debug("getting teams from request: %s", req.nextUrl.searchParams);
@@ -140,9 +141,12 @@ export function buildIcsEvents(games: Game[]): ics.IcsEvent[] {
         `${lb}Game Report: https://lscluster.hockeytech.com/game_reports/text-game-report.php?client_code=pwhl&game_id=${g.game_id}`;
     }
 
+    // hash the entire game object in case any details change
+    const uid = `${g.client_code}-s${g.season_id}-g${g.game_id}-${hash(g)}@hockeytech.com`;
+
     const event: ics.IcsEvent = {
       summary: summary,
-      uid: `${g.client_code}-s${g.season_id}-g${g.game_id}@hockeytech.com`,
+      uid: uid,
       stamp: startObject,
       start: startObject,
       duration: { hours: 3 },
