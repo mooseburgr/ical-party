@@ -92,7 +92,7 @@ export async function getAllScheduleEvents(): Promise<ics.IcsEvent[]> {
 
 export function mapToIcsEvent(event: LeagueLabEvent): ics.IcsEvent {
   // hash the whole event so a new UID is generated if anything changes
-  const uid = `${event.gameId}_${objectHash.sha1(event)}`;
+  const uid = `${event.gameId}_${hash(event)}`;
 
   const start = getStartDateTime(event);
   const startObject: ics.IcsDateObject = {
@@ -202,4 +202,8 @@ function cleanGameResult(result?: string): string {
   if (!result) return "TBD";
 
   return result.replaceAll("<br>", "\n").replaceAll("&nbsp;", " ").trim();
+}
+
+export function hash(data: any): string {
+  return objectHash.sha1(data);
 }
