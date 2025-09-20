@@ -13,9 +13,9 @@ import {
 
 const logger = pino();
 
-// cache our own response for 2 minutes
+// cache our own response for 5 minutes
 // https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config#revalidate
-export const revalidate = 120;
+export const revalidate = 300;
 
 export async function GET(req: NextRequest) {
   const teams = getTeamsFromRequest(req);
