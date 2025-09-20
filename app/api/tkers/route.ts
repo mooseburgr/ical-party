@@ -5,9 +5,9 @@ import { generateIcalContent, getAllScheduleEvents } from "@/app/api/tkers/lib";
 
 const logger = pino();
 
-// cache our own response for 10 minutes
+// cache our own response for 20 minutes
 // https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config#revalidate
-export const revalidate = 600;
+export const revalidate = 1200;
 
 export async function GET(req: NextRequest) {
   const events = await getAllScheduleEvents();
