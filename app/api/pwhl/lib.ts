@@ -20,9 +20,6 @@ const scheduleUrl =
   "https://lscluster.hockeytech.com/feed/?feed=modulekit&view=schedule&fmt=json&lang=en" +
   "&key=446521baf8c38984&client_code=pwhl&season_id=";
 
-// "all" season IDs (1 through 15)
-const allSeasonIds = Array.from({ length: 15 }, (_, i) => i + 1);
-
 export function getTeamsFromRequest(req: NextRequest): string[] {
   logger.debug("getting teams from request: %s", req.nextUrl.searchParams);
 
@@ -61,7 +58,10 @@ export async function getCurrentSeasonId(): Promise<number> {
 export async function fetchAllGames(): Promise<Game[]> {
   const allGames: Game[] = [];
   const currentSeasonId = await getCurrentSeasonId();
-  // iterate over "all" seasons and add each's list of games to a single list
+
+  // iterate over all seasons and add each's list of games to a single list
+  const allSeasonIds = [...Array(currentSeasonId).keys()].map(i => i + 1);
+
   const seasonPromises = allSeasonIds.map(async (seasonId) => {
     try {
       const seasonResp = await fetch(scheduleUrl + seasonId, {
