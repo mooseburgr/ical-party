@@ -60,7 +60,7 @@ export async function fetchAllGames(): Promise<Game[]> {
   const currentSeasonId = await getCurrentSeasonId();
 
   // iterate over all seasons and add each's list of games to a single list
-  const allSeasonIds = [...Array(currentSeasonId).keys()].map(i => i + 1);
+  const allSeasonIds = [...Array(currentSeasonId).keys()].map((i) => i + 1);
 
   const seasonPromises = allSeasonIds.map(async (seasonId) => {
     try {
@@ -177,12 +177,12 @@ export function generateIcalContent(
 }
 
 export function getStartDateTime(game: Partial<Game>): Date {
-  if (game.GameDateISO8601) {
-    return new Date(game.GameDateISO8601);
-  }
   if (game.game_status === "TBD" && game.date_played) {
     // use 8am CST to indicate TBD/tentative start time
     return new Date(`${game.date_played}T13:00:00Z`);
+  }
+  if (game.GameDateISO8601) {
+    return new Date(game.GameDateISO8601);
   }
   if (game.date_time_played) {
     return new Date(game.date_time_played);

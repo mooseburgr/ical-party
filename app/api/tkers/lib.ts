@@ -2,7 +2,7 @@ import parser from "any-date-parser";
 import * as cheerio from "cheerio";
 import { minify } from "html-minifier-terser";
 import { DateTime } from "luxon";
-import objectHash from "object-hash";
+import objectHash, { type NotUndefined } from "object-hash";
 import pino from "pino";
 import * as ics from "ts-ics";
 import { revalidate } from "@/app/api/tkers/route";
@@ -204,6 +204,6 @@ function cleanGameResult(result?: string): string {
   return result.replaceAll("<br>", "\n").replaceAll("&nbsp;", " ").trim();
 }
 
-export function hash(data: any): string {
+export function hash(data: NotUndefined): string {
   return objectHash.sha1(data);
 }

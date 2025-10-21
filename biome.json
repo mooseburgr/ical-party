@@ -3,6 +3,9 @@
   "formatter": {
     "indentStyle": "space"
   },
+  "files": {
+    "includes": ["**", "!**/node_modules", "!**/.next", "!**/.idea"]
+  },
   "vcs": {
     "useIgnoreFile": true
   }
