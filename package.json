@@ -7,7 +7,7 @@
     "clean": "rm -rf .next && rm -rf node_modules",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "npx @biomejs/biome check .",
     "format": "npx @biomejs/biome check --write --unsafe .",
     "test": "npx jest"
   },
