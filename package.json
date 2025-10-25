@@ -7,7 +7,7 @@
     "clean": "rm -rf .next && rm -rf node_modules",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "npx @biomejs/biome check .",
     "format": "npx @biomejs/biome check --write --unsafe .",
     "test": "npx jest"
   },
@@ -26,7 +26,7 @@
     "html-minifier-terser": "^7.2.0",
     "luxon": "^3.7.2",
     "luxon-parser": "^1.0.3",
-    "next": "15.5.6",
+    "next": "16.0.0",
     "object-hash": "^3.0.0",
     "pino": "^10.1.0",
     "react": "^19",
