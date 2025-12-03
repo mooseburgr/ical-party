@@ -43,6 +43,7 @@
     "@types/react-dom": "^19",
     "postcss": "^8",
     "tailwindcss": "^4.0.0",
-    "typescript": "^5"
+    "typescript": "^5",
+    "why-is-node-running": "^3.2.2"
   }
 }
