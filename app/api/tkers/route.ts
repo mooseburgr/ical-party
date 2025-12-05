@@ -12,9 +12,7 @@ export async function GET(req: NextRequest) {
   const events = await getAllScheduleEvents();
 
   logger.info(
-    `fetched %s TKers events for user-agent '%s'`,
-    events.length,
-    req.headers.get(USER_AGENT),
+    `fetched ${events.length} TKers events for user-agent '${req.headers.get(USER_AGENT)}'`,
   );
 
   return new Response(generateIcalContent(events), {

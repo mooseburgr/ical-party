@@ -21,11 +21,7 @@ export default async function handler(
   const icsEvents = buildIcsEvents(filteredGames);
 
   logger.info(
-    `filtered w '%s' down to %s out of %s total PWHL games from user-agent '%s'`,
-    teams,
-    filteredGames?.length,
-    allGames?.length,
-    req.headers[USER_AGENT],
+    `filtered w '${teams}' down to ${filteredGames?.length} out of ${allGames?.length} total PWHL games from user-agent '${req.headers[USER_AGENT]}'`,
   );
 
   const outputIcsCalendar = generateIcalContent(teams, icsEvents);

@@ -1,7 +1,7 @@
 import { parseIcsCalendar } from "@ts-ics/schema-zod";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { generateIcsCalendar } from "ts-ics";
-import { logger } from "@/app/api/pwhl/lib";
+import { CONTENT_TYPE, logger, TEXT_CAL, USER_AGENT } from "@/app/api/pwhl/lib";
 
 const everyGameId = Array.from({ length: 999 }, (_, i) => i + 1).join(",");
 const allGamesIcalUrl = `https://lscluster.hockeytech.com/components/calendar/ical_add_games.php?client_code=pwhl&game_ids=${everyGameId}`;
@@ -41,11 +41,7 @@ export default async function handler(
   });
 
   logger.info(
-    `filtered w '%s' down to %s out of %s total PWHL games from user-agent '%s'`,
-    teams,
-    filteredGames?.length,
-    allGamesCalendar.events?.length,
-    req.headers["user-agent"],
+    `filtered w '${teams}' down to ${filteredGames?.length} out of ${allGamesCalendar.events?.length} total PWHL games from user-agent '${req.headers[USER_AGENT]}'`,
   );
   const filteredGamesCalendar = {
     prodId: allGamesCalendar.prodId.trimEnd(),
@@ -55,8 +51,5 @@ export default async function handler(
   };
   const outputIcsCalendar = generateIcsCalendar(filteredGamesCalendar);
 
-  res
-    .status(200)
-    .setHeader("Content-Type", "text/calendar")
-    .send(outputIcsCalendar);
+  res.status(200).setHeader(CONTENT_TYPE, TEXT_CAL).send(outputIcsCalendar);
 }

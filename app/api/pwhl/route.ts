@@ -25,11 +25,7 @@ export async function GET(req: NextRequest) {
   const icsEvents = buildIcsEvents(filteredGames);
 
   logger.info(
-    `filtered w '%s' down to %s out of %s total PWHL games from user-agent '%s'`,
-    teams,
-    filteredGames?.length,
-    allGames?.length,
-    (await headers()).get(USER_AGENT),
+    `filtered w '${teams}' down to ${filteredGames?.length} out of ${allGames?.length} total PWHL games from user-agent '${(await headers()).get(USER_AGENT)}'`,
   );
 
   return new Response(generateIcalContent(teams, icsEvents), {
