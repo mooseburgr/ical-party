@@ -32,7 +32,7 @@ export async function getScheduleEventsForTeamId(
   scheduleTable.children().each((i, el) => {
     const $tr = $html(el);
     if ($tr.text().trim() === "PLAYOFFS") {
-      logger.trace(`${i}: ${$tr} - discarding playoffs banner row`);
+      logger.debug(`${i}: ${$tr} - discarding playoffs banner row`);
       return;
     }
 
@@ -51,7 +51,7 @@ export async function getScheduleEventsForTeamId(
       result: cleanGameResult($tr.find("td.result").html()?.trim()),
     };
 
-    logger.trace(`${i}: ${$tr} - mapped to: ${JSON.stringify(event)}`);
+    logger.debug(`${i}: ${$tr} - mapped to: ${JSON.stringify(event)}`);
     splitEvents.push(event);
   });
 
@@ -119,7 +119,7 @@ export function mapToIcsEvent(event: LeagueLabEvent): ics.IcsEvent {
     url: url,
     status: "CONFIRMED",
   };
-  logger.trace({ event, result }, "mapped LeagueLabEvent to ics.IcsEvent");
+  logger.debug("mapped LeagueLabEvent to ics.IcsEvent", { event, result });
   return result;
 }
 
@@ -134,7 +134,7 @@ export function getStartDateTime(game: Partial<LeagueLabEvent>): Date {
   });
 
   if (dateTime.isValid) {
-    logger.info({ attemptDateTime: dateTime }, "parsed date successfully");
+    logger.info("parsed date successfully", { attemptDateTime: dateTime });
     return new Date(dateTime.toString());
   }
 
@@ -150,10 +150,9 @@ export async function getAddress(event: LeagueLabEvent): Promise<string> {
   // e.g. https://cscsports.leaguelab.com/location/6916
 
   if (!event.locationId) {
-    logger.warn(
-      { event },
-      "locationId is undefined, returning fallback address",
-    );
+    logger.warn("locationId is undefined, returning fallback address", {
+      event,
+    });
     return event.location ?? "unknown";
   }
   const resp = await fetch(
@@ -172,7 +171,7 @@ export async function getAddress(event: LeagueLabEvent): Promise<string> {
   const address = cleanAddress($addressDiv.text().trim());
 
   const result = address ?? event.location ?? "unknown";
-  logger.info({ event, result }, "resultant address");
+  logger.info("resultant address", { event, result });
   return result;
 }
 

@@ -31,7 +31,8 @@
     "react": "^19",
     "react-dom": "^19",
     "sharp": "^0.34.5",
-    "ts-ics": "^2.0.1"
+    "ts-ics": "^2.0.1",
+    "winston": "^3.18.3"
   },
   "devDependencies": {
     "@biomejs/biome": "2.3.8",

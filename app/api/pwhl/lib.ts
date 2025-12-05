@@ -1,10 +1,17 @@
 import type { NextRequest } from "next/server";
 import * as ics from "ts-ics";
+import winston from "winston";
 import { revalidate } from "@/app/api/pwhl/route";
 import type { Game, HockeyTechResponse } from "@/app/api/pwhl/types";
 import { hash } from "@/app/api/tkers/lib";
 
-export const logger = console; // TODO wtf pino dependencies
+const { combine, timestamp, json } = winston.format;
+
+export const logger = winston.createLogger({
+  level: process.env.LOG_LEVEL ?? "info",
+  format: combine(timestamp(), json()),
+  transports: [new winston.transports.Console()],
+});
 
 export const CONTENT_TYPE = "content-type";
 export const USER_AGENT = "user-agent";
@@ -20,7 +27,7 @@ const scheduleUrl =
   "&key=446521baf8c38984&client_code=pwhl&season_id=";
 
 export function getTeamsFromRequest(req: NextRequest): string[] {
-  logger.trace("getting teams from request: %s", req.nextUrl.searchParams);
+  logger.debug("getting teams from request: %s", req.nextUrl.searchParams);
 
   // handle comma-separated list of teams
   let teams = req.nextUrl.searchParams.getAll("teams").join(",").split(",");
@@ -32,7 +39,7 @@ export function getTeamsFromRequest(req: NextRequest): string[] {
     .filter((team, index, self) => self.indexOf(team) === index)
     .sort((a, b) => a.localeCompare(b));
 
-  logger.trace("got teams from request: %s", teams);
+  logger.debug("got teams from request: %s", teams);
   return teams;
 }
 
@@ -48,9 +55,9 @@ export async function getCurrentSeasonId(): Promise<number> {
     const seasonData: HockeyTechResponse = await seasonResp.json();
     id = +seasonData.SiteKit.Parameters.season_id;
   } catch (error) {
-    logger.error({ error }, "Failed to fetch current season ID");
+    logger.error("Failed to fetch current season ID", { error });
   }
-  logger.trace("determined current season ID as: %s", id);
+  logger.debug("determined current season ID as: %s", id);
   return id;
 }
 
@@ -74,7 +81,7 @@ export async function fetchAllGames(): Promise<Game[]> {
       const seasonData: HockeyTechResponse = await seasonResp.json();
       return seasonData.SiteKit.Schedule || [];
     } catch (error) {
-      logger.error({ error, seasonId }, "Failed to fetch season schedule");
+      logger.error("Failed to fetch season schedule", { error, seasonId });
       return [];
     }
   });
@@ -87,7 +94,7 @@ export async function fetchAllGames(): Promise<Game[]> {
 
 // filter games by selected teams if specified
 export function filterGamesByTeam(allGames: Game[], teams: string[]): Game[] {
-  logger.trace("filtering with teams: %s", teams);
+  logger.debug("filtering with teams: %s", teams);
   if (teams.length === 0) {
     return allGames;
   }
@@ -156,7 +163,7 @@ export function buildIcsEvents(games: Game[]): ics.IcsEvent[] {
       url: g.mobile_calendar,
       status: "CONFIRMED",
     };
-    logger.trace({ g, event }, "built IcsEvent from game");
+    logger.debug("built IcsEvent from game", { g, event });
     return event;
   });
 }
