@@ -1,11 +1,10 @@
 import type { NextRequest } from "next/server";
-import pino from "pino";
 import * as ics from "ts-ics";
 import { revalidate } from "@/app/api/pwhl/route";
 import type { Game, HockeyTechResponse } from "@/app/api/pwhl/types";
 import { hash } from "@/app/api/tkers/lib";
 
-const logger = pino();
+export const logger = console; // TODO wtf pino dependencies
 
 export const CONTENT_TYPE = "content-type";
 export const USER_AGENT = "user-agent";
@@ -60,7 +59,7 @@ export async function fetchAllGames(): Promise<Game[]> {
   const currentSeasonId = await getCurrentSeasonId();
 
   // iterate over all seasons and add each's list of games to a single list
-  const allSeasonIds = [...Array(currentSeasonId).keys()].map((i) => i + 1);
+  const allSeasonIds = [...new Array(currentSeasonId).keys()].map((i) => i + 1);
 
   const seasonPromises = allSeasonIds.map(async (seasonId) => {
     try {

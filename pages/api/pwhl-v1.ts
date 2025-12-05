@@ -1,9 +1,7 @@
 import { parseIcsCalendar } from "@ts-ics/schema-zod";
 import type { NextApiRequest, NextApiResponse } from "next";
-import pino from "pino";
 import { generateIcsCalendar } from "ts-ics";
-
-const logger = pino();
+import { logger } from "@/app/api/pwhl/lib";
 
 const everyGameId = Array.from({ length: 999 }, (_, i) => i + 1).join(",");
 const allGamesIcalUrl = `https://lscluster.hockeytech.com/components/calendar/ical_add_games.php?client_code=pwhl&game_ids=${everyGameId}`;
