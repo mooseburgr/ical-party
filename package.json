@@ -28,7 +28,6 @@
     "luxon-parser": "^1.0.3",
     "next": "16.0.7",
     "object-hash": "^3.0.0",
-    "pino": "^10.1.0",
     "react": "^19",
     "react-dom": "^19",
     "sharp": "^0.34.5",

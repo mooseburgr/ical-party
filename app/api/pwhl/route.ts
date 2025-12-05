@@ -1,17 +1,15 @@
 import { headers } from "next/headers";
 import type { NextRequest } from "next/server";
-import pino from "pino";
 import {
   buildIcsEvents,
   fetchAllGames,
   filterGamesByTeam,
   generateIcalContent,
   getTeamsFromRequest,
+  logger,
   TEXT_CAL,
   USER_AGENT,
 } from "./lib";
-
-const logger = pino();
 
 // cache our own response for 5 minutes
 // https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config#revalidate

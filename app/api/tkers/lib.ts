@@ -3,12 +3,11 @@ import * as cheerio from "cheerio";
 import { minify } from "html-minifier-terser";
 import { DateTime } from "luxon";
 import objectHash, { type NotUndefined } from "object-hash";
-import pino from "pino";
 import * as ics from "ts-ics";
+import { logger } from "@/app/api/pwhl/lib";
 import { revalidate } from "@/app/api/tkers/route";
 import type { LeagueLabEvent } from "@/app/api/tkers/types";
 
-const logger = pino();
 const lb = "\n";
 
 export const tkersTeamIds = [879554, 897061];
