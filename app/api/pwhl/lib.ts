@@ -27,7 +27,7 @@ const scheduleUrl =
   "&key=446521baf8c38984&client_code=pwhl&season_id=";
 
 export function getTeamsFromRequest(req: NextRequest): string[] {
-  logger.debug("getting teams from request: %s", req.nextUrl.searchParams);
+  logger.debug(`getting teams from request: ${req.nextUrl.searchParams}`);
 
   // handle comma-separated list of teams
   let teams = req.nextUrl.searchParams.getAll("teams").join(",").split(",");
@@ -39,7 +39,7 @@ export function getTeamsFromRequest(req: NextRequest): string[] {
     .filter((team, index, self) => self.indexOf(team) === index)
     .sort((a, b) => a.localeCompare(b));
 
-  logger.debug("got teams from request: %s", teams);
+  logger.debug(`got teams from request: ${teams}`);
   return teams;
 }
 
@@ -55,9 +55,9 @@ export async function getCurrentSeasonId(): Promise<number> {
     const seasonData: HockeyTechResponse = await seasonResp.json();
     id = +seasonData.SiteKit.Parameters.season_id;
   } catch (error) {
-    logger.error("Failed to fetch current season ID", { error });
+    logger.error(`Failed to fetch current season ID: ${error}`);
   }
-  logger.debug("determined current season ID as: %s", id);
+  logger.debug(`determined current season ID as: ${id}`);
   return id;
 }
 
@@ -81,7 +81,7 @@ export async function fetchAllGames(): Promise<Game[]> {
       const seasonData: HockeyTechResponse = await seasonResp.json();
       return seasonData.SiteKit.Schedule || [];
     } catch (error) {
-      logger.error("Failed to fetch season schedule", { error, seasonId });
+      logger.error(`Failed to fetch season schedule: ${seasonId}, ${error}`);
       return [];
     }
   });
@@ -94,7 +94,7 @@ export async function fetchAllGames(): Promise<Game[]> {
 
 // filter games by selected teams if specified
 export function filterGamesByTeam(allGames: Game[], teams: string[]): Game[] {
-  logger.debug("filtering with teams: %s", teams);
+  logger.debug(`filtering with teams: ${teams}`);
   if (teams.length === 0) {
     return allGames;
   }
@@ -163,7 +163,7 @@ export function buildIcsEvents(games: Game[]): ics.IcsEvent[] {
       url: g.mobile_calendar,
       status: "CONFIRMED",
     };
-    logger.debug("built IcsEvent from game", { g, event });
+    logger.debug(`built IcsEvent from game: ${g}, ${JSON.stringify(event)}`);
     return event;
   });
 }

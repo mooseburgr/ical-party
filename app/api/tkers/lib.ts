@@ -119,7 +119,9 @@ export function mapToIcsEvent(event: LeagueLabEvent): ics.IcsEvent {
     url: url,
     status: "CONFIRMED",
   };
-  logger.debug("mapped LeagueLabEvent to ics.IcsEvent", { event, result });
+  logger.debug(
+    `mapped LeagueLabEvent to ics.IcsEvent: ${JSON.stringify(event)}, ${JSON.stringify(result)}`,
+  );
   return result;
 }
 
@@ -134,7 +136,7 @@ export function getStartDateTime(game: Partial<LeagueLabEvent>): Date {
   });
 
   if (dateTime.isValid) {
-    logger.info("parsed date successfully", { attemptDateTime: dateTime });
+    logger.info(`parsed date successfully - ${dateTime}`);
     return new Date(dateTime.toString());
   }
 
@@ -150,9 +152,9 @@ export async function getAddress(event: LeagueLabEvent): Promise<string> {
   // e.g. https://cscsports.leaguelab.com/location/6916
 
   if (!event.locationId) {
-    logger.warn("locationId is undefined, returning fallback address", {
-      event,
-    });
+    logger.warn(
+      `locationId is undefined, returning fallback address - ${JSON.stringify(event)}`,
+    );
     return event.location ?? "unknown";
   }
   const resp = await fetch(
@@ -171,7 +173,9 @@ export async function getAddress(event: LeagueLabEvent): Promise<string> {
   const address = cleanAddress($addressDiv.text().trim());
 
   const result = address ?? event.location ?? "unknown";
-  logger.info("resultant address", { event, result });
+  logger.info(
+    `resultant address: ${JSON.stringify(event)}, ${JSON.stringify(result)}`,
+  );
   return result;
 }
 
