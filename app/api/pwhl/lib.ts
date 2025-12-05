@@ -20,7 +20,7 @@ const scheduleUrl =
   "&key=446521baf8c38984&client_code=pwhl&season_id=";
 
 export function getTeamsFromRequest(req: NextRequest): string[] {
-  logger.debug("getting teams from request: %s", req.nextUrl.searchParams);
+  logger.trace("getting teams from request: %s", req.nextUrl.searchParams);
 
   // handle comma-separated list of teams
   let teams = req.nextUrl.searchParams.getAll("teams").join(",").split(",");
@@ -32,7 +32,7 @@ export function getTeamsFromRequest(req: NextRequest): string[] {
     .filter((team, index, self) => self.indexOf(team) === index)
     .sort((a, b) => a.localeCompare(b));
 
-  logger.debug("got teams from request: %s", teams);
+  logger.trace("got teams from request: %s", teams);
   return teams;
 }
 
@@ -50,7 +50,7 @@ export async function getCurrentSeasonId(): Promise<number> {
   } catch (error) {
     logger.error({ error }, "Failed to fetch current season ID");
   }
-  logger.debug("determined current season ID as: %s", id);
+  logger.trace("determined current season ID as: %s", id);
   return id;
 }
 
@@ -87,7 +87,7 @@ export async function fetchAllGames(): Promise<Game[]> {
 
 // filter games by selected teams if specified
 export function filterGamesByTeam(allGames: Game[], teams: string[]): Game[] {
-  logger.debug("filtering with teams: %s", teams);
+  logger.trace("filtering with teams: %s", teams);
   if (teams.length === 0) {
     return allGames;
   }
@@ -142,6 +142,8 @@ export function buildIcsEvents(games: Game[]): ics.IcsEvent[] {
 
     // hash the entire game object in case any details change
     const uid = `${g.client_code}-s${g.season_id}-g${g.game_id}-${hash(g)}@hockeytech.com`;
+    // in 2025, venue_name has been of format "Venue Name | City"
+    const trimmedVenue = substringBefore(g.venue_name, "|").trim();
 
     const event: ics.IcsEvent = {
       summary: summary,
@@ -149,12 +151,12 @@ export function buildIcsEvents(games: Game[]): ics.IcsEvent[] {
       stamp: startObject,
       start: startObject,
       duration: { hours: 3 },
-      location: `${g.venue_name}, ${g.venue_location}`,
+      location: `${trimmedVenue}, ${g.venue_location}`,
       description: description,
       url: g.mobile_calendar,
       status: "CONFIRMED",
     };
-    logger.debug({ g, event }, "built IcsEvent from game");
+    logger.trace({ g, event }, "built IcsEvent from game");
     return event;
   });
 }
@@ -188,4 +190,9 @@ export function getStartDateTime(game: Partial<Game>): Date {
   }
   // default to epoch time if no date is available
   return new Date(0);
+}
+
+function substringBefore(fullStr: string, searchStr: string) {
+  const index = fullStr.indexOf(searchStr);
+  return index === -1 ? fullStr : fullStr.substring(0, index);
 }
