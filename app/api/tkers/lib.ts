@@ -32,7 +32,7 @@ export async function getScheduleEventsForTeamId(
   scheduleTable.children().each((i, el) => {
     const $tr = $html(el);
     if ($tr.text().trim() === "PLAYOFFS") {
-      logger.debug(`${i}: ${$tr} - discarding playoffs banner row`);
+      logger.trace(`${i}: ${$tr} - discarding playoffs banner row`);
       return;
     }
 
@@ -51,7 +51,7 @@ export async function getScheduleEventsForTeamId(
       result: cleanGameResult($tr.find("td.result").html()?.trim()),
     };
 
-    logger.debug(`${i}: ${$tr} - mapped to: ${JSON.stringify(event)}`);
+    logger.trace(`${i}: ${$tr} - mapped to: ${JSON.stringify(event)}`);
     splitEvents.push(event);
   });
 
@@ -119,7 +119,7 @@ export function mapToIcsEvent(event: LeagueLabEvent): ics.IcsEvent {
     url: url,
     status: "CONFIRMED",
   };
-  logger.debug({ event, result }, "mapped LeagueLabEvent to ics.IcsEvent");
+  logger.trace({ event, result }, "mapped LeagueLabEvent to ics.IcsEvent");
   return result;
 }
 
