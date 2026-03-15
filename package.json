@@ -21,7 +21,7 @@
     "@types/html-minifier-terser": "^7.0.2",
     "@vercel/analytics": "^2.0.0",
     "@vercel/otel": "^2.1.1",
-    "@vercel/speed-insights": "^1.2.0",
+    "@vercel/speed-insights": "^2.0.0",
     "cheerio": "^1.2.0",
     "html-minifier-terser": "^7.2.0",
     "luxon": "^3.7.2",
