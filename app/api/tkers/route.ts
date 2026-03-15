@@ -7,7 +7,8 @@ const logger = console;
 // https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config#revalidate
 export const revalidate = 1200;
 
-const realUrl = "https://cscsports.leaguelab.com/my-schedule-feed/2395630-bd8166fcedd127268408987db277deff";
+const realUrl =
+  "https://cscsports.leaguelab.com/my-schedule-feed/2395630-bd8166fcedd127268408987db277deff";
 
 export async function GET(req: NextRequest) {
   // fetch the schedule events from the source feed
