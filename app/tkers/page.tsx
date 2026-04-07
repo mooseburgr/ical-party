@@ -4,7 +4,7 @@ import { Box, Button, Grid, Tooltip, Typography } from "@mui/material";
 
 import CodeBlock from "@/components/CodeBlock";
 
-export default function ToggleButtonsPage() {
+export default function TKersPage() {
   const httpsUrl = "https://ical-party.vercel.app/api/tkers";
   const webcalUrl = httpsUrl.replace("https", "webcal");
   return (
