@@ -9,7 +9,11 @@ export const revalidate = 1200;
 
 export async function GET(req: NextRequest) {
   // fetch the schedule events from passed URL param
-  const url = req.nextUrl.searchParams.get("url") ?? "";
+  const url = req.nextUrl.searchParams.get("url");
+  if (!url) {
+    return new Response("No URL provided", { status: 204 });
+  }
+
   const resp = await fetch(url, {
     headers: {
       "user-agent": req.headers.get(USER_AGENT) ?? "",

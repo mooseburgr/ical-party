@@ -11,7 +11,7 @@ export default function CalendarPreviewPage() {
     <Box sx={{ p: 4 }}>
       <Grid container spacing={2}>
         <Grid size={{ xs: 12 }}>
-          <Calendar icalUrl={`/api/proxy?url=${encodeURIComponent(url)}`} />
+          <Calendar icalUrl={url} />
         </Grid>
       </Grid>
     </Box>
