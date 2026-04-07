@@ -10,7 +10,9 @@ const darkTheme = createTheme({
   },
 });
 
-export default function ThemeRegistry({ children }: { children: ReactNode }) {
+export default function ThemeRegistry({
+  children,
+}: Readonly<{ children: ReactNode }>) {
   return (
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />

@@ -9,7 +9,7 @@ interface CodeBlockProps {
   code: string;
 }
 
-export default function CodeBlock({ code }: CodeBlockProps) {
+export default function CodeBlock({ code }: Readonly<CodeBlockProps>) {
   const [isCopied, setIsCopied] = useState(false);
 
   const copyToClipboard = async () => {
