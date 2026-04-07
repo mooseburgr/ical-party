@@ -28,7 +28,9 @@ export default function CalendarPreviewPage() {
         </Grid>
 
         <Grid size={{ xs: 12 }}>
-          <Calendar icalUrl={inputValue} />
+          <Calendar
+            icalUrl={`/api/proxy?url=${encodeURIComponent(inputValue)}`}
+          />
         </Grid>
       </Grid>
     </Box>
