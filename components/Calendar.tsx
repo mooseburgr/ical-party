@@ -55,7 +55,7 @@ export default function Calendar({ icalUrl }: Readonly<CalendarProps>) {
           plugins={[dayGridPlugin, timeGridPlugin, listPlugin, iCalendarPlugin]}
           initialView="dayGridMonth"
           events={{
-            url: httpsUrl,
+            url: `/api/proxy?url=${encodeURIComponent(httpsUrl)}`,
             format: "ics",
           }}
         />
