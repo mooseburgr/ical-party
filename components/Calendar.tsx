@@ -20,6 +20,7 @@ export default function Calendar({ icalUrl }: Readonly<CalendarProps>) {
   return (
     <Grid container spacing={2}>
       <Grid size={{ xs: 12 }}>
+        <h4>TODO: show popover with event details on click!</h4>
         <Box sx={{ display: "flex", gap: 2, mt: 2 }}>
           <Button
             variant="contained"
