@@ -50,7 +50,7 @@ export default function Calendar({ icalUrl }: Readonly<CalendarProps>) {
           headerToolbar={{
             left: "prev,next today",
             center: "title",
-            right: "dayGridMonth,dayGridWeek,dayGridDay,listWeek",
+            right: "dayGridMonth,dayGridWeek,listWeek",
           }}
           plugins={[dayGridPlugin, timeGridPlugin, listPlugin, iCalendarPlugin]}
           initialView="dayGridMonth"
