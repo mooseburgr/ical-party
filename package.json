@@ -27,7 +27,7 @@
     "html-minifier-terser": "^7.2.0",
     "luxon": "^3.7.2",
     "luxon-parser": "^1.0.3",
-    "next": "16.2.3",
+    "next": "16.2.4",
     "nuqs": "^2.8.9",
     "object-hash": "^3.0.0",
     "react": "^19",
