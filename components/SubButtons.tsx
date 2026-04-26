@@ -15,7 +15,15 @@ export default function SubButtons({
   const webcalUrl = httpsUrl.replace("https", "webcal");
 
   return (
-    <Box sx={{ display: "flex", gap: 2, mt: 2, alignItems: "center" }}>
+    <Box
+      sx={{
+        display: "flex",
+        gap: 2,
+        mt: 2,
+        alignItems: "center",
+        flexDirection: { xs: "column", sm: "row" },
+      }}
+    >
       <Button
         variant="contained"
         color="primary"
@@ -26,6 +34,7 @@ export default function SubButtons({
       >
         Subscribe in Google Calendar
       </Button>
+
       <Button
         variant="contained"
         color="secondary"

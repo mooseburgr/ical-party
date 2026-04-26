@@ -1,5 +1,5 @@
 import type { NextRequest } from "next/server";
-import {isBlank} from "@/app/preview/lib";
+import { isBlank } from "@/app/preview/lib";
 
 const logger = console;
 
