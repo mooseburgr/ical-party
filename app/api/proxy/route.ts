@@ -1,4 +1,5 @@
 import type { NextRequest } from "next/server";
+import {isBlank} from "@/app/preview/lib";
 
 const logger = console;
 
@@ -9,7 +10,7 @@ export const revalidate = 1200;
 export async function GET(req: NextRequest) {
   // fetch the schedule events from passed URL param
   const url = req.nextUrl.searchParams.get("url");
-  if (!url) {
+  if (!url || isBlank(url)) {
     return new Response("No URL provided", { status: 204 });
   }
 
