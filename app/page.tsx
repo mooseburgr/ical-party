@@ -28,7 +28,7 @@ export default function ToggleButtonsPage() {
   const [selectedPwhlTeams, setSelectedPwhlTeams] = useState<string[]>([
     "Minnesota",
   ]);
-  const pwhlUrl = `https://ical-party.vercel.app/api/pwhl?teams=${selectedPwhlTeams.sort().join(",")}`;
+  const pwhlUrl = `https://ical-party.vercel.app/api/pwhl?teams=${selectedPwhlTeams.toSorted().join(",")}`;
 
   const handlePwhlToggle = (
     _event: React.MouseEvent<HTMLElement>,
