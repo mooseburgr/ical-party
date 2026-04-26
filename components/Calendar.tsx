@@ -25,6 +25,7 @@ export default function Calendar({
           events={events}
           areEventsDraggable={false}
           readOnly={true}
+          defaultPreferences={{ isSidePanelOpen: false }}
           defaultView="month"
         />
       </Grid>

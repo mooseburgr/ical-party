@@ -9,9 +9,7 @@ import type React from "react";
 export const metadata: Metadata = {
   title: "iCal Party",
   description: "Welcome to the iCalendar party",
-  icons: [
-    "https://avatars.slack-edge.com/2022-01-11/2950060844657_4cae9e95e482718f4ef6_88.jpg",
-  ],
+  icons: ["https://fonts.gstatic.com/s/e/notoemoji/17.0/1f5d3_fe0f/72.png"],
 };
 
 export default function RootLayout({
