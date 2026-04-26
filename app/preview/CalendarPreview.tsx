@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { Box, Grid, TextField } from "@mui/material";
 import type { SchedulerEvent } from "@mui/x-scheduler/models";
@@ -18,7 +18,8 @@ export default function CalendarPreview() {
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     await setUrl(event.target.value);
-    setEvents(await fetchCalendarEvents(event.target.value));
+    const proxyUrl = `/api/proxy?url=${encodeURIComponent(event.target.value)}`;
+    setEvents(await fetchCalendarEvents(proxyUrl));
   };
 
   return (

@@ -7,7 +7,6 @@ export async function fetchCalendarEvents(
 ): Promise<SchedulerEvent[]> {
   if (isBlank(url)) return [];
 
-  // TODO need to proxy this? `/api/proxy?url=${encodeURIComponent(httpsUrl)}`
   const icalResp = await fetch(url).then((resp) => resp.text());
 
   const calendarParsed: IcsCalendar = parseIcsCalendar(icalResp);
