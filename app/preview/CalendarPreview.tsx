@@ -18,6 +18,7 @@ export default function CalendarPreview() {
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     await setUrl(event.target.value);
+    setEvents([]);
     const proxyUrl = `/api/proxy?url=${encodeURIComponent(event.target.value)}`;
     setEvents(await fetchCalendarEvents(proxyUrl));
   };

@@ -1,5 +1,4 @@
 import type { NextRequest } from "next/server";
-import { USER_AGENT } from "@/app/api/pwhl/lib";
 
 const logger = console;
 
@@ -14,11 +13,7 @@ export async function GET(req: NextRequest) {
     return new Response("No URL provided", { status: 204 });
   }
 
-  const resp = await fetch(url, {
-    headers: {
-      "user-agent": req.headers.get(USER_AGENT) ?? "",
-    },
-  });
+  const resp = await fetch(url);
 
   logger.debug(`proxied URL feed ${url} with status ${resp.status}`);
 
