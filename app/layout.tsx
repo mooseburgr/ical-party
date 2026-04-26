@@ -1,8 +1,10 @@
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata } from "next";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 import ThemeRegistry from "@/components/ThemeRegistry";
 import "./globals.css";
+import type React from "react";
 
 export const metadata: Metadata = {
   title: "iCal Party",
@@ -21,7 +23,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <ThemeRegistry>
-          {children}
+          <NuqsAdapter>{children}</NuqsAdapter>
           <Analytics />
           <SpeedInsights />
         </ThemeRegistry>
