@@ -23,7 +23,6 @@ export default function Calendar({
       <Grid size={{ xs: 12 }}>
         <EventCalendar
           events={events}
-          areEventsDraggable={false}
           readOnly={true}
           defaultPreferences={{ isSidePanelOpen: false }}
           defaultView="month"

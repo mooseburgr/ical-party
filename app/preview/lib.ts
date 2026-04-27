@@ -13,17 +13,26 @@ export async function fetchCalendarEvents(
   const events: SchedulerEvent[] | undefined = calendarParsed.events?.map(
     (e) => {
       const allDay = e.start.type === "DATE";
+
+      let desc = e.description || "";
+      if (e.location) {
+        desc += `\n\nLocation: ${e.location}`;
+      }
+
+      const start = e.start.date;
+      if (allDay) {
+        // unclear why the component needs this adjustment
+        start.setDate(start.getDate() + 1);
+      }
+
       return {
         id: e.uid,
         title: e.summary,
-        description: e.description,
-        start: e.start.date.toISOString(),
-        end: allDay
-          ? e.start.date.toISOString()
-          : e.end?.date.toISOString() || "",
+        description: desc,
+        start: start.toISOString(),
+        end: e.end?.date.toISOString() || "",
         allDay: allDay,
-        readOnly: true,
-        location: e.location,
+        location: e.location, // not yet implemented
       };
     },
   );
