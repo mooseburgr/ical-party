@@ -7,7 +7,10 @@ export async function fetchCalendarEvents(
 ): Promise<SchedulerEvent[]> {
   if (isBlank(url)) return [];
 
-  const icalResp = await fetch(url).then((resp) => resp.text());
+  // cache for 10 minutes
+  const icalResp = await fetch(url, { next: { revalidate: 600 } }).then(
+    (resp) => resp.text(),
+  );
 
   const calendarParsed: IcsCalendar = parseIcsCalendar(icalResp);
   const events: SchedulerEvent[] | undefined = calendarParsed.events?.map(
