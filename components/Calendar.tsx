@@ -2,6 +2,7 @@ import { Grid } from "@mui/material";
 import { EventCalendar } from "@mui/x-scheduler/event-calendar";
 import type { SchedulerEvent } from "@mui/x-scheduler/models";
 import SubButtons from "@/components/SubButtons";
+import "../app/globals.css";
 
 interface CalendarProps {
   icalUrl: string;
