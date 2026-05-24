@@ -25,3 +25,12 @@ body {
     text-wrap: balance;
   }
 } */
+
+.MuiEventCalendar-eventDialogDescriptionLabel {
+  word-wrap: break-word;
+  white-space: pre-wrap;
+}
+
+.MuiEventCalendar-eventDialogResourceContainer {
+  display: none !important;
+}
