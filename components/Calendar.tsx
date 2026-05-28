@@ -25,8 +25,12 @@ export default function Calendar({
         <EventCalendar
           events={events}
           readOnly={true}
-          defaultPreferences={{ isSidePanelOpen: false }}
+          defaultPreferences={{
+            isSidePanelOpen: false,
+            showEmptyDaysInAgenda: false,
+          }}
           defaultView="month"
+          eventColor="orange"
         />
       </Grid>
     </Grid>
