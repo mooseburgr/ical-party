@@ -1,6 +1,6 @@
 import type { SchedulerEvent } from "@mui/x-scheduler/models";
 import { parseIcsCalendar } from "@ts-ics/schema-zod";
-import type { IcsCalendar } from "ts-ics";
+import { generateIcsRecurrenceRule, type IcsCalendar } from "ts-ics";
 
 export async function fetchCalendarEvents(
   url: string,
@@ -15,7 +15,7 @@ export async function fetchCalendarEvents(
   const calendarParsed: IcsCalendar = parseIcsCalendar(icalResp);
   const events: SchedulerEvent[] | undefined = calendarParsed.events?.map(
     (e) => {
-      const allDay = e.start.type === "DATE";
+      const isAllDay = e.start.type === "DATE";
 
       let desc = e.description || "";
       if (e.location) {
@@ -23,18 +23,23 @@ export async function fetchCalendarEvents(
       }
 
       const start = e.start.date;
-      if (allDay) {
+      if (isAllDay) {
         // unclear why the component needs this adjustment
         start.setDate(start.getDate() + 1);
+      }
+      let rrule: string | undefined;
+      if (e.recurrenceRule) {
+        rrule = generateIcsRecurrenceRule(e.recurrenceRule);
       }
 
       return {
         id: e.uid,
         title: e.summary,
         description: desc,
+        rrule: rrule,
         start: start.toISOString(),
         end: e.end?.date.toISOString() || "",
-        allDay: allDay,
+        allDay: isAllDay,
         location: e.location, // not yet implemented
       };
     },
