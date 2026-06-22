@@ -38,9 +38,9 @@
   },
   "devDependencies": {
     "@biomejs/biome": "2.5.0",
-    "@tailwindcss/postcss": "^4.3.0",
-    "@types/luxon": "^3.7.1",
-    "@types/node": "^25",
+    "@tailwindcss/postcss": "^4.3.1",
+    "@types/luxon": "^3.7.2",
+    "@types/node": "^26",
     "@types/object-hash": "^3.0.6",
     "@types/react": "^19",
     "@types/react-dom": "^19",
