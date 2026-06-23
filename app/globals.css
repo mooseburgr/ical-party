@@ -1,36 +1,14 @@
-/* @tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
-} */
-
 .MuiEventCalendar-eventDialogDescriptionLabel {
   word-wrap: break-word;
   white-space: pre-wrap;
 }
 
-.MuiEventCalendar-eventDialogResourceContainer {
-  display: none !important;
+/* vertically align the toolbars at the ~sm breakpoint and below */
+@media (max-width: 640px) {
+  .fc-header-toolbar {
+    flex-direction: column;
+  }
+  .fc-footer-toolbar {
+    flex-direction: column;
+  }
 }
