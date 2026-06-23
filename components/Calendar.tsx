@@ -22,6 +22,7 @@ import FullCalendar from "@fullcalendar/react";
 import rrulePlugin from "@fullcalendar/rrule";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import LocationPinIcon from "@mui/icons-material/LocationPin";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import Linkify from "linkify-react";
 import { useMemo, useState } from "react";
 
@@ -38,12 +39,16 @@ export default function Calendar({
 }: Readonly<CalendarProps>) {
   // TODO useQueryState to store selected view, date, etc?
 
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
+
+  // ensure it's http[s] protocol for our fetch-proxier
+  const httpsUrl = icalUrl.replace("webcal://", "https://");
   const eventsSource = useMemo(
     () => ({
-      url: `/api/proxy?url=${encodeURIComponent(icalUrl)}`,
+      url: `/api/proxy?url=${encodeURIComponent(httpsUrl)}`,
       format: "ics",
     }),
-    [icalUrl],
+    [httpsUrl],
   );
   const [isLoading, setIsLoading] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState<EventImpl | null>(null);
@@ -83,6 +88,11 @@ export default function Calendar({
                   href={`https://www.google.com/maps/search/${selectedEvent.extendedProps.location}/`}
                   target="_blank"
                   rel="noopener noreferrer"
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "0.5rem",
+                  }}
                 >
                   <LocationPinIcon /> {selectedEvent.extendedProps.location}
                 </a>
@@ -110,7 +120,7 @@ export default function Calendar({
           headerToolbar={{
             left: "today prev,next",
             center: "title",
-            right: "dayGridMonth,timeGridWeek,listMonth",
+            right: "dayGridMonth,timeGridWeek,listWeek",
           }}
           footerToolbar={{
             left: "today prev,next",
@@ -122,7 +132,7 @@ export default function Calendar({
             iCalendarPlugin,
             rrulePlugin,
           ]}
-          initialView="listMonth"
+          initialView={isMobile ? "listWeek" : "dayGridMonth"}
           loading={loadingHandler}
           events={eventsSource}
           eventClick={eventClickHandler}
