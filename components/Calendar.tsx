@@ -1,6 +1,15 @@
 "use client";
 
-import { Box, Grid, LinearProgress, Modal, Typography } from "@mui/material";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Grid,
+  LinearProgress,
+} from "@mui/material";
 import type { SchedulerEvent } from "@mui/x-scheduler/models";
 import SubButtons from "@/components/SubButtons";
 import "../app/globals.css";
@@ -21,18 +30,6 @@ interface CalendarProps {
   events: SchedulerEvent[] | undefined;
   submissionsUrl?: string;
 }
-
-const modalStyle = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 600,
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
-  p: 4,
-};
 
 export default function Calendar({
   icalUrl,
@@ -65,49 +62,48 @@ export default function Calendar({
         <SubButtons icalUrl={icalUrl} submissionsUrl={submissionsUrl} />
       </Grid>
 
-      <Modal open={isLoading}>
-        <Box sx={modalStyle}>
-          <Typography variant="h6" component="h2">
-            Loading events...
-          </Typography>
+      <Dialog open={isLoading}>
+        <DialogTitle>Loading events...</DialogTitle>
+        <DialogContent>
           <LinearProgress aria-label="Loading…" sx={{ mt: 2 }} />
-        </Box>
-      </Modal>
+        </DialogContent>
+      </Dialog>
 
-      <Modal open={selectedEvent !== null} onClose={handleClose}>
-        <Box sx={modalStyle}>
-          <Typography variant="h5" component="h2">
-            {selectedEvent?.title}
-          </Typography>
-          <p>
+      <Dialog open={selectedEvent !== null} onClose={handleClose}>
+        <DialogTitle>{selectedEvent?.title}</DialogTitle>
+        <DialogContent dividers>
+          <DialogContentText>
             {selectedEvent?.allDay
               ? selectedEvent.start?.toLocaleDateString()
               : `${selectedEvent?.start?.toLocaleString()} - ${selectedEvent?.end?.toLocaleTimeString()}`}
-          </p>
 
-          {selectedEvent?.extendedProps?.location && (
-            <p>
-              <a
-                href={`https://www.google.com/maps/search/?q=${selectedEvent.extendedProps.location}`}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <LocationPinIcon /> {selectedEvent.extendedProps.location}
-              </a>
-            </p>
-          )}
+            {selectedEvent?.extendedProps?.location && (
+              <p>
+                <a
+                  href={`https://www.google.com/maps/search/${selectedEvent.extendedProps.location}/`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <LocationPinIcon /> {selectedEvent.extendedProps.location}
+                </a>
+              </p>
+            )}
 
-          {selectedEvent?.extendedProps.description && (
-            <p style={{ whiteSpace: "pre-wrap" }}>
-              <Linkify
-                options={{ target: "_blank", rel: "noopener noreferrer" }}
-              >
-                {selectedEvent.extendedProps.description}
-              </Linkify>
-            </p>
-          )}
-        </Box>
-      </Modal>
+            {selectedEvent?.extendedProps.description && (
+              <p style={{ whiteSpace: "pre-wrap" }}>
+                <Linkify
+                  options={{ target: "_blank", rel: "noopener noreferrer" }}
+                >
+                  {selectedEvent.extendedProps.description}
+                </Linkify>
+              </p>
+            )}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Close</Button>
+        </DialogActions>
+      </Dialog>
 
       <Grid size={{ xs: 12 }}>
         <FullCalendar
@@ -123,10 +119,11 @@ export default function Calendar({
             iCalendarPlugin,
             rrulePlugin,
           ]}
-          initialView="dayGridMonth"
+          initialView="listMonth"
           loading={loadingHandler}
           events={eventsSource}
           eventClick={eventClickHandler}
+          height={"auto"}
         />
       </Grid>
 
