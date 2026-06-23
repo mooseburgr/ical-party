@@ -108,9 +108,12 @@ export default function Calendar({
       <Grid size={{ xs: 12 }}>
         <FullCalendar
           headerToolbar={{
-            left: "prev,next today",
+            left: "today prev,next",
             center: "title",
             right: "dayGridMonth,timeGridWeek,listMonth",
+          }}
+          footerToolbar={{
+            left: "today prev,next",
           }}
           plugins={[
             dayGridPlugin,
@@ -123,6 +126,7 @@ export default function Calendar({
           loading={loadingHandler}
           events={eventsSource}
           eventClick={eventClickHandler}
+          nowIndicator={true}
           height={"auto"}
         />
       </Grid>
