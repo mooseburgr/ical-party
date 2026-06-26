@@ -42,7 +42,7 @@
     "react": "^19",
     "react-dom": "^19",
     "sharp": "0.35.2",
-    "ts-ics": "2.4.5",
+    "ts-ics": "2.4.6",
     "winston": "^3.19.0"
   },
   "devDependencies": {
