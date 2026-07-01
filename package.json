@@ -36,7 +36,7 @@
     "linkifyjs": "^4.3.3",
     "luxon": "^3.7.2",
     "luxon-parser": "^1.0.3",
-    "next": "16.2.9",
+    "next": "16.2.10",
     "nuqs": "^2.8.9",
     "object-hash": "^3.0.0",
     "react": "^19",
