@@ -46,7 +46,7 @@
     "winston": "^3.19.0"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.5.2",
+    "@biomejs/biome": "2.5.4",
     "@tailwindcss/postcss": "4.3.2",
     "@types/luxon": "^3.7.2",
     "@types/node": "^26",
