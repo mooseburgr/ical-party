@@ -23,7 +23,7 @@
     "@fullcalendar/timegrid": "^6.1.21",
     "@mui/icons-material": "^9.2.0",
     "@mui/material": "^9.1.2",
-    "@mui/x-scheduler": "9.0.0-beta.5",
+    "@mui/x-scheduler": "9.0.0-beta.6",
     "@opentelemetry/api": "^1.9.1",
     "@ts-ics/schema-zod": "2.4.6",
     "@types/html-minifier-terser": "^7.0.2",
