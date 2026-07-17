@@ -47,14 +47,14 @@
   },
   "devDependencies": {
     "@biomejs/biome": "2.5.4",
-    "@tailwindcss/postcss": "4.3.2",
+    "@tailwindcss/postcss": "4.3.3",
     "@types/luxon": "^3.7.2",
     "@types/node": "^26",
     "@types/object-hash": "^3.0.6",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "postcss": "^8",
-    "tailwindcss": "4.3.2",
+    "tailwindcss": "4.3.3",
     "typescript": "^6"
   }
 }
