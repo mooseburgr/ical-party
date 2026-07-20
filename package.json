@@ -55,6 +55,6 @@
     "@types/react-dom": "^19",
     "postcss": "^8",
     "tailwindcss": "4.3.3",
-    "typescript": "^6"
+    "typescript": "^7"
   }
 }
