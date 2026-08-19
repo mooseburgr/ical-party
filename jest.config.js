@@ -1,10 +1,10 @@
 module.exports = {
-  preset: "ts-jest",
   testEnvironment: "node",
-  testMatch: ["**/app/**/*.test.ts"],
-  globals: {
-    "ts-jest": {
-      tsconfig: "tsconfig.json",
-    },
+  testMatch: ["**/app/api/pwhl/**/*.test.ts"],
+  transform: {
+    "^.+\\.tsx?$": ["@swc/jest"],
+  },
+  moduleNameMapper: {
+    "^@/(.*)$": "<rootDir>/$1",
   },
 };

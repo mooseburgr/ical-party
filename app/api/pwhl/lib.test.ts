@@ -1,4 +1,3 @@
-import { describe, expect, it, jest } from "@jest/globals";
 import type { NextRequest } from "next/server";
 import {
   buildIcsEvents,
@@ -68,7 +67,6 @@ describe("getTeamsFromRequest", () => {
 describe("fetchAllGames", () => {
   it("should handle errors when fetching games", async () => {
     // Mock the fetch function to throw an error
-    // @ts-expect-error
     global.fetch = jest.fn(() =>
       Promise.reject(new Error("Network error")),
     ) as jest.Mock;
