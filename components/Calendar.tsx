@@ -13,18 +13,28 @@ import {
 import type { SchedulerEvent } from "@mui/x-scheduler/models";
 import SubButtons from "@/components/SubButtons";
 import "../app/globals.css";
-import type { EventClickArg } from "@fullcalendar/core";
-import type { EventImpl } from "@fullcalendar/core/internal";
-import dayGridPlugin from "@fullcalendar/daygrid";
 import iCalendarPlugin from "@fullcalendar/icalendar";
-import listPlugin from "@fullcalendar/list";
-import FullCalendar from "@fullcalendar/react";
+import EventCalendar from "@fullcalendar/mui/classic/EventCalendar";
+import {
+  type EventApi,
+  type EventClickInfo,
+  useCalendarController,
+} from "@fullcalendar/react";
+import dayGridPlugin from "@fullcalendar/react/daygrid";
+import interactionPlugin from "@fullcalendar/react/interaction";
+import listPlugin from "@fullcalendar/react/list";
+import themePlugin from "@fullcalendar/react/themes/classic";
+import timeGridPlugin from "@fullcalendar/react/timegrid";
 import rrulePlugin from "@fullcalendar/rrule";
-import timeGridPlugin from "@fullcalendar/timegrid";
 import LocationPinIcon from "@mui/icons-material/LocationPin";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Linkify from "linkify-react";
 import { useMemo, useState } from "react";
+
+import "@fullcalendar/react/skeleton.css";
+import "@fullcalendar/mui/classic/theme.css";
+
+// import "@fullcalendar/react/themes/classic/palette.css";
 
 interface CalendarProps {
   icalUrl: string;
@@ -37,7 +47,7 @@ export default function Calendar({
   events,
   submissionsUrl,
 }: Readonly<CalendarProps>) {
-  // TODO useQueryState to store selected view, date, etc?
+  // TODO useQueryState to store selected view, date, etc? (+ event ID!)
 
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
 
@@ -51,15 +61,18 @@ export default function Calendar({
     [httpsUrl],
   );
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedEvent, setSelectedEvent] = useState<EventImpl | null>(null);
+  const [selectedEvent, setSelectedEvent] = useState<EventApi | null>(null);
 
-  const eventClickHandler = (info: EventClickArg) => {
+  const eventClickHandler = (info: EventClickInfo) => {
     setSelectedEvent(info.event);
+    console.log(JSON.stringify(info.event, null, 2));
   };
   const loadingHandler = (isLoading: boolean) => {
     setIsLoading(isLoading);
   };
   const handleClose = () => setSelectedEvent(null);
+
+  const _controller = useCalendarController();
 
   return (
     <Grid container spacing={2}>
@@ -116,16 +129,21 @@ export default function Calendar({
       </Dialog>
 
       <Grid size={{ xs: 12 }}>
-        <FullCalendar
-          headerToolbar={{
-            left: "today prev,next",
-            center: "title",
-            right: "dayGridMonth,timeGridWeek,listWeek",
-          }}
-          footerToolbar={{
-            left: "today prev,next",
-          }}
+        <EventCalendar
+          // headerToolbar={{
+          //   left: "today prev,next",
+          //   center: "title",
+          //   right: "dayGridMonth,timeGridWeek,listWeek",
+          // }}
+          // footerToolbar={{
+          //   left: "today prev,next",
+          // }}
+          headerToolbarClass={"event-cal-header-toolbar"}
+          footerToolbarClass={"event-cal-footer-toolbar"}
+          aspectRatio={2}
           plugins={[
+            themePlugin,
+            interactionPlugin,
             dayGridPlugin,
             timeGridPlugin,
             listPlugin,
