@@ -15,16 +15,20 @@ import type React from "react";
 import { useState } from "react";
 import CodeBlock from "@/components/CodeBlock";
 import boston from "../public/boston.webp";
+import detroit from "../public/detroit.webp";
+import hamilton from "../public/hamilton.webp";
+import lasvegas from "../public/las-vegas.webp";
 import minnesota from "../public/minnesota.webp";
 import montreal from "../public/montreal.webp";
-import newyork from "../public/newyork.webp";
+import newyork from "../public/new-york.webp";
 import ottawa from "../public/ottawa.webp";
+import sanjose from "../public/san-jose.webp";
 import seattle from "../public/seattle.webp";
 import toronto from "../public/toronto.webp";
 import vancouver from "../public/vancouver.webp";
 
 export default function ToggleButtonsPage() {
-  const iconWidth = 140;
+  const iconWidth = 120;
   const [selectedPwhlTeams, setSelectedPwhlTeams] = useState<string[]>([
     "Minnesota",
   ]);
@@ -58,6 +62,24 @@ export default function ToggleButtonsPage() {
                 </ToggleButton>
               </Tooltip>
 
+              <Tooltip title="PWHL Detroit">
+                <ToggleButton value="Detroit" aria-label="Detroit">
+                  <Image src={detroit} alt="Detroit" width={iconWidth} />
+                </ToggleButton>
+              </Tooltip>
+
+              <Tooltip title="PWHL Hamilton">
+                <ToggleButton value="Hamilton" aria-label="Hamilton">
+                  <Image src={hamilton} alt="Hamilton" width={iconWidth} />
+                </ToggleButton>
+              </Tooltip>
+
+              <Tooltip title="PWHL Las Vegas">
+                <ToggleButton value="Las%20Vegas" aria-label="Las Vegas">
+                  <Image src={lasvegas} alt="Las Vegas" width={iconWidth} />
+                </ToggleButton>
+              </Tooltip>
+
               <Tooltip title="Minnesota Frost">
                 <ToggleButton value="Minnesota" aria-label="Minnesota">
                   <Image src={minnesota} alt="Minnesota" width={iconWidth} />
@@ -82,7 +104,13 @@ export default function ToggleButtonsPage() {
                 </ToggleButton>
               </Tooltip>
 
-              <Tooltip title="PWHL Seattle">
+              <Tooltip title="PWHL San Jose">
+                <ToggleButton value="San%20Jose" aria-label="San Jose">
+                  <Image src={sanjose} alt="San Jose" width={iconWidth} />
+                </ToggleButton>
+              </Tooltip>
+
+              <Tooltip title="Seattle Torrent">
                 <ToggleButton value="Seattle" aria-label="Seattle">
                   <Image src={seattle} alt="Seattle" width={iconWidth} />
                 </ToggleButton>
@@ -94,7 +122,7 @@ export default function ToggleButtonsPage() {
                 </ToggleButton>
               </Tooltip>
 
-              <Tooltip title="PWHL Vancouver">
+              <Tooltip title="Vancouver Goldeneyes">
                 <ToggleButton value="Vancouver" aria-label="Vancouver">
                   <Image src={vancouver} alt="Vancouver" width={iconWidth} />
                 </ToggleButton>
