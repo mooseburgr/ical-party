@@ -59,7 +59,7 @@ export default function ToggleButtonsPage() {
     <Box sx={{ p: 4 }}>
       <Grid container spacing={2}>
         <Grid size={12}>
-          <Box component="fieldset">
+          <Box component="fieldset" >
             <Typography component="legend" id="pwhl-teams-label" variant="h4">
               PWHL teams to include
             </Typography>
