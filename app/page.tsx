@@ -6,7 +6,6 @@ import {
   Grid,
   ToggleButton,
   ToggleButtonGroup,
-  Tooltip,
   Typography,
 } from "@mui/material";
 
@@ -15,16 +14,35 @@ import type React from "react";
 import { useState } from "react";
 import CodeBlock from "@/components/CodeBlock";
 import boston from "../public/boston.webp";
+import detroit from "../public/detroit.webp";
+import hamilton from "../public/hamilton.webp";
+import lasvegas from "../public/las-vegas.webp";
 import minnesota from "../public/minnesota.webp";
 import montreal from "../public/montreal.webp";
-import newyork from "../public/newyork.webp";
+import newyork from "../public/new-york.webp";
 import ottawa from "../public/ottawa.webp";
+import sanjose from "../public/san-jose.webp";
 import seattle from "../public/seattle.webp";
 import toronto from "../public/toronto.webp";
 import vancouver from "../public/vancouver.webp";
 
+const pwhlTeams = [
+  { name: "Boston Fleet", value: "Boston", image: boston },
+  { name: "PWHL Detroit", value: "Detroit", image: detroit },
+  { name: "PWHL Hamilton", value: "Hamilton", image: hamilton },
+  { name: "PWHL Las Vegas", value: "Las%20Vegas", image: lasvegas },
+  { name: "Minnesota Frost", value: "Minnesota", image: minnesota },
+  { name: "Montréal Victoire", value: "Montr", image: montreal },
+  { name: "New York Sirens", value: "New%20York", image: newyork },
+  { name: "Ottawa Charge", value: "Ottawa", image: ottawa },
+  { name: "PWHL San Jose", value: "San%20Jose", image: sanjose },
+  { name: "Seattle Torrent", value: "Seattle", image: seattle },
+  { name: "Toronto Sceptres", value: "Toronto", image: toronto },
+  { name: "Vancouver Goldeneyes", value: "Vancouver", image: vancouver },
+];
+
 export default function ToggleButtonsPage() {
-  const iconWidth = 140;
+  const iconWidth = 120;
   const [selectedPwhlTeams, setSelectedPwhlTeams] = useState<string[]>([
     "Minnesota",
   ]);
@@ -40,67 +58,75 @@ export default function ToggleButtonsPage() {
   return (
     <Box sx={{ p: 4 }}>
       <Grid container spacing={2}>
-        <Tooltip title="If no teams are selected, all games will be included">
-          <Typography variant="h4" gutterBottom>
-            PWHL teams to include
-          </Typography>
-        </Tooltip>
         <Grid size={12}>
-          <ToggleButtonGroup
-            value={selectedPwhlTeams}
-            onChange={handlePwhlToggle}
-            aria-label="PWHL teams button group"
-          >
-            <Grid container spacing={2}>
-              <Tooltip title="Boston Fleet">
-                <ToggleButton value="Boston" aria-label="Boston">
-                  <Image src={boston} alt="Boston" width={iconWidth} />
-                </ToggleButton>
-              </Tooltip>
+          <Box component="fieldset" >
+            <Typography component="legend" id="pwhl-teams-label" variant="h4">
+              PWHL teams to include
+            </Typography>
+            <Typography id="pwhl-teams-help" sx={{ mb: 2 }}>
+              Choose one or more teams. If none are selected, all games will be
+              included.
+            </Typography>
 
-              <Tooltip title="Minnesota Frost">
-                <ToggleButton value="Minnesota" aria-label="Minnesota">
-                  <Image src={minnesota} alt="Minnesota" width={iconWidth} />
+            <ToggleButtonGroup
+              value={selectedPwhlTeams}
+              onChange={handlePwhlToggle}
+              aria-labelledby="pwhl-teams-label"
+              aria-describedby="pwhl-teams-help"
+              sx={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))",
+                gap: 1.5,
+                width: "100%",
+                "& .MuiToggleButtonGroup-grouped": {
+                  border: 1,
+                  borderColor: "divider",
+                  borderRadius: 2,
+                  flexDirection: "column",
+                  gap: 1,
+                  minHeight: 156,
+                  p: 1.5,
+                  textTransform: "none",
+                  color: "text.primary",
+                  transition: "all 0.2s ease-in-out",
+                  "&:hover": {
+                    borderColor: "primary.main",
+                    backgroundColor: "action.hover",
+                  },
+                  "&.Mui-selected": {
+                    borderColor: "primary.main",
+                    backgroundColor: "primary.main",
+                    color: "primary.contrastText",
+                    "&:hover": {
+                      backgroundColor: "primary.dark",
+                    },
+                  },
+                },
+              }}
+            >
+              {pwhlTeams.map((team) => (
+                <ToggleButton
+                  key={team.value}
+                  value={team.value}
+                  aria-label={team.name}
+                >
+                  <Image
+                    src={team.image}
+                    alt={`team logo for ${team.name}`}
+                    width={iconWidth}
+                    height={iconWidth}
+                    style={{ objectFit: "contain" }}
+                  />
+                  <Box
+                    component="span"
+                    sx={{ typography: "body2", fontWeight: 600 }}
+                  >
+                    {team.name}
+                  </Box>
                 </ToggleButton>
-              </Tooltip>
-
-              <Tooltip title="Montréal Victoire">
-                <ToggleButton value="Montr" aria-label="Montreal">
-                  <Image src={montreal} alt="Montreal" width={iconWidth} />
-                </ToggleButton>
-              </Tooltip>
-
-              <Tooltip title="New York Sirens">
-                <ToggleButton value="New%20York" aria-label="New York">
-                  <Image src={newyork} alt="New York" width={iconWidth} />
-                </ToggleButton>
-              </Tooltip>
-
-              <Tooltip title="Ottawa Charge">
-                <ToggleButton value="Ottawa" aria-label="Ottawa">
-                  <Image src={ottawa} alt="Ottawa" width={iconWidth} />
-                </ToggleButton>
-              </Tooltip>
-
-              <Tooltip title="PWHL Seattle">
-                <ToggleButton value="Seattle" aria-label="Seattle">
-                  <Image src={seattle} alt="Seattle" width={iconWidth} />
-                </ToggleButton>
-              </Tooltip>
-
-              <Tooltip title="Toronto Sceptres">
-                <ToggleButton value="Toronto" aria-label="Toronto">
-                  <Image src={toronto} alt="Toronto" width={iconWidth} />
-                </ToggleButton>
-              </Tooltip>
-
-              <Tooltip title="PWHL Vancouver">
-                <ToggleButton value="Vancouver" aria-label="Vancouver">
-                  <Image src={vancouver} alt="Vancouver" width={iconWidth} />
-                </ToggleButton>
-              </Tooltip>
-            </Grid>
-          </ToggleButtonGroup>
+              ))}
+            </ToggleButtonGroup>
+          </Box>
         </Grid>
 
         <Grid size={{ xs: 12, md: 8 }}>
