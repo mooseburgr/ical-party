@@ -59,5 +59,9 @@
     "postcss": "8.5.28",
     "tailwindcss": "4.3.3",
     "typescript": "7.0.2"
+  },
+  "overrides": {
+    "@mui/material": "^9.1.2",
+    "@mui/icons-material": "^9.2.0"
   }
 }
