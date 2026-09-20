@@ -21,7 +21,7 @@
     "@fullcalendar/rrule": "^7.1.0",
     "@mui/icons-material": "^9.2.0",
     "@mui/material": "^9.1.2",
-    "@mui/x-scheduler": "9.0.0-beta.11",
+    "@mui/x-scheduler": "9.0.0-beta.12",
     "@opentelemetry/api": "^1.9.1",
     "@ts-ics/schema-zod": "2.4.6",
     "@types/html-minifier-terser": "^7.0.2",
@@ -41,7 +41,7 @@
     "react": "^19",
     "react-dom": "^19",
     "sharp": "0.35.4",
-    "temporal-polyfill": "^1.0.4",
+    "temporal-polyfill": "^1.0.5",
     "ts-ics": "2.4.6",
     "winston": "^3.19.0"
   },
