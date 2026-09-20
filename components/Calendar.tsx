@@ -158,21 +158,6 @@ export default function Calendar({
           height={"auto"}
         />
       </Grid>
-
-      {/*
-      <Grid size={{ xs: 12 }}>
-        <EventCalendar
-          events={events}
-          readOnly={true}
-          defaultPreferences={{
-            isSidePanelOpen: false,
-            showEmptyDaysInAgenda: false,
-          }}
-          defaultView="month"
-          eventColor="orange"
-        />
-      </Grid>
-      */}
     </Grid>
   );
 }
