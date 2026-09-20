@@ -147,7 +147,7 @@ export default function Calendar({
             dayGridPlugin,
             timeGridPlugin,
             listPlugin,
-            iCalendarPlugin,
+            iCalendarPlugin as any, // workaround for fullcalendar's old TS version
             rrulePlugin,
           ]}
           initialView={isMobile ? "listWeek" : "dayGridMonth"}
