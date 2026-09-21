@@ -5,10 +5,10 @@
 
 /* vertically align the toolbars at the ~sm breakpoint and below */
 @media (max-width: 640px) {
-  .event-cal-header-toolbar {
+  .fc-header-toolbar {
     flex-direction: column;
   }
-  .event-cal-footer-toolbar {
+  .fc-footer-toolbar {
     flex-direction: column;
   }
 }
