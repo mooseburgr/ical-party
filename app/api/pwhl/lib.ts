@@ -66,16 +66,17 @@ export async function fetchAllGames(): Promise<Game[]> {
   const currentSeasonId = await getCurrentSeasonId();
 
   // iterate over all seasons and add each's list of games to a single list
-  const allSeasonIds = [...new Array(currentSeasonId).keys()].map((i) => i + 1);
+  // fetch one season ahead in case the API's current season lags behind reality
+  const allSeasonIds = [...new Array(currentSeasonId + 1).keys()].map((i) => i + 1);
 
   const seasonPromises = allSeasonIds.map(async (seasonId) => {
     try {
       const seasonResp = await fetch(scheduleUrl + seasonId, {
         cache: "force-cache",
         next: {
-          // only cache response for 5 min if current season
+          // only cache response for 5 min if current or next season
           revalidate:
-            seasonId === currentSeasonId ? FIVE_MINS_SEC : THREE_HOURS_SEC,
+            seasonId >= currentSeasonId ? FIVE_MINS_SEC : THREE_HOURS_SEC,
         },
       });
       const seasonData: HockeyTechResponse = await seasonResp.json();
