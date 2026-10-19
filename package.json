@@ -47,16 +47,16 @@
   },
   "devDependencies": {
     "@biomejs/biome": "2.5.15",
-    "@swc/core": "1.16.13",
+    "@swc/core": "1.16.18",
     "@swc/jest": "0.2.39",
     "@tailwindcss/postcss": "4.3.3",
     "@types/jest": "30.0.0",
     "@types/luxon": "3.7.6",
-    "@types/node": "26.6.4",
+    "@types/node": "26.6.5",
     "@types/object-hash": "3.0.6",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
-    "postcss": "8.5.28",
+    "postcss": "8.5.30",
     "tailwindcss": "4.3.3",
     "typescript": "7.0.2"
   }
